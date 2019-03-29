@@ -1,0 +1,10 @@
+{
+  "name": "Checklist",
+  "version": "1.0.0",
+  "description": "A checklist pwa",
+  "main": "index.js",
+  "repository": "https://github.com/JesseDavda/Checklist",
+  "author": "JesseDavda <jessepilot@live.com>",
+  "license": "MIT",
+  "private": false
+}
