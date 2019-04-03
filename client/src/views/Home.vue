@@ -1,12 +1,13 @@
 <template>
     <div class="checklist-page-container" >
-        <div class="checklist-header-container">
-            <h1>Checklist</h1>
+        <div class="checklist-header">
+            <div class="checklist-header-container">
+                <i class="fa fa-th-list" />
+                <h1>checklist</h1>
+            </div>
         </div>
         <div class="checklist-container">
-            <div class="checklist-sidebar-container">
-            
-            </div>
+            <SideMenu :checklistView="checklist" @expand="checklist = true"></SideMenu>
             <div class="checklist-list-container">
             
             </div>
@@ -15,8 +16,18 @@
 </template>
 
 <script>
+    import SideMenu from '../components/side-menu.vue';
+
     export default {
         name: 'Home',
+        components: {
+            SideMenu
+        },
+        data() {
+            return {
+                checklist: false
+            }
+        }
     }
 </script>
 
@@ -25,27 +36,39 @@
         width: 100%;
         height: 100%;
         position: relative;
-        background-color: #eee;
+        background-color: #1A1A1D;
         padding-top: 100px;
     }
 
-    .checklist-header-container {
-        background-color: #fff;
+    .checklist-header {
+        background-color: #1A1A1D;
         width: 100%;
         height: 100px;
         position: absolute;
         top: 0px;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.12), 0 3px 12px rgba(0,0,0,0.19);
-        border-bottom: 1px solid #ccc;
         display: flex;
         align-items: center;
-        padding-left: 70em;
+        justify-content: center;
 
         h1 {
             font-family: 'Roboto';
-            font-weight: 700;
-            color: #000;
+            font-weight: 300;
+            color: rgba(195,7,63,1);
+            margin: 0;
         }
+
+        i {
+            zoom: 2.3;
+            margin-right: 5px;
+            color: rgba(195,7,63,1);
+        }
+    }
+
+    .checklist-header-container {
+        width: 100em;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 
     .checklist-container {
@@ -56,21 +79,12 @@
         display: flex;
     }
 
-    .checklist-sidebar-container {
-        width: 400px;
-        height: 900px;
-        background-color: #fff;
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        border-radius: 7px;
-    }
-
     .checklist-list-container {
         width: 960px;
         height: 1500px;
         margin-left: 5em;
         background-color: #fff;
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        border-radius: 7px;
+        border-radius: 10px;
     }
 </style>
 
