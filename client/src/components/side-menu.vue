@@ -1,13 +1,13 @@
 <template>
     <div v-bind:class="{ extraHeight: checklistView }" class="side-menu-container">
         <div v-if="!checklistView" @click="newChecklist()" class="menu-action-container">
-            <div class="icon-container">
+            <div class="icon-container onlyIconContainer">
                 <i class="fa fa-plus-square" />
             </div>
             <h3>Create new checklist</h3>
         </div>
         <div v-if="checklistView" class="menu-action-container">
-            <div class="icon-container">
+            <div class="icon-container topIconContainer">
                 <i class="fa fa-plus" />
             </div>
             <h3>Add item</h3>
@@ -31,7 +31,7 @@
             <h3>Share checklist</h3>
         </div>
         <div v-if="checklistView" class="menu-action-container">
-            <div class="icon-container">
+            <div class="icon-container bottomIconContainer">
                 <i class="fa fa-ban" />
             </div>
             <h3>Delete checklist</h3>
@@ -80,7 +80,7 @@ export default {
 
         i {
             color: #1A1A1D;
-            zoom: 2.3;
+            zoom: 1.7;
         }
 
         &:hover {
@@ -98,7 +98,19 @@ export default {
         justify-content: center;
         align-items: center;
         background-color: #eee;
-        border-radius: 10px;
+    }
+
+    .topIconContainer {
+        border-top-left-radius: 10px;
+    }
+
+    .bottomIconContainer {
+        border-bottom-left-radius: 10px;
+    }
+
+    .onlyIconContainer {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
     }
 
     .extraHeight {

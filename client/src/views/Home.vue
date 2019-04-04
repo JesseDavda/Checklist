@@ -8,20 +8,20 @@
         </div>
         <div class="checklist-container">
             <SideMenu :checklistView="checklist" @expand="checklist = true"></SideMenu>
-            <div class="checklist-list-container">
-            
-            </div>
+            <CheckListView />
         </div>
     </div>
 </template>
 
 <script>
     import SideMenu from '../components/side-menu.vue';
+    import CheckListView from '../components/list-view.vue';
 
     export default {
         name: 'Home',
         components: {
-            SideMenu
+            SideMenu,
+            CheckListView
         },
         data() {
             return {
@@ -77,14 +77,6 @@
         margin: 0 auto;
         padding: 4em 5em;
         display: flex;
-    }
-
-    .checklist-list-container {
-        width: 960px;
-        height: 1500px;
-        margin-left: 5em;
-        background-color: #fff;
-        border-radius: 10px;
     }
 </style>
 
