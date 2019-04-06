@@ -1,58 +1,30 @@
 <template>
     <div class="checklist-view-container">
-        <div v-if="!found" class="not-found-container" >
+        <div v-if="!found && !loading" class="not-found-container" >
             <i class="fas fa-search" />
             <h2>You don't seem to have any checklists</h2>
         </div>
-        <div class="lists-container" v-if="found">
+        <div class="loading-container" v-if="loading">
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+            <p>Fetching your checklists...</p>
+        </div>
+        <div class="lists-container" v-if="found && !loading">
             <h2>My Checklists</h2>
             <ul>
-                <li>
-                    <div class="checklist topList">
-                        <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
-                    </div>
-                </li>
-                <li>
+                <li v-for="checklist in checklists" :key="checklist._id" @click="selectChecklist(checklist)">
                     <div class="checklist">
                         <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
-                    </div>
-                </li>
-                <li>
-                    <div class="checklist">
-                        <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
-                    </div>
-                </li>
-                <li>
-                    <div class="checklist">
-                        <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
-                    </div>
-                </li>
-                <li>
-                    <div class="checklist">
-                        <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
-                    </div>
-                </li>
-                <li>
-                    <div class="checklist">
-                        <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
-                    </div>
-                </li>
-                <li>
-                    <div class="checklist">
-                        <i class="fal fa-list iconOne" />
-                        <h3 class="checklist-name">My first list</h3>
+                        <h3 class="checklist-name">{{ checklist.name }}</h3>
                         <i class="fal fa-chevron-circle-right iconTwo" />
                     </div>
                 </li>
@@ -65,25 +37,33 @@
 import axios from 'axios';
 
 export default {
-    name: "CheckListView",
+    name: "ListView",
+    props: [
+        'finishedLoad'
+    ],
     data() {
         return {
             found: false,
-            checklists: {}
+            checklists: {},
+            loading: true
         }
     },
-    mounted() {
-        const self = this;
-
-        setTimeout(() => {
-            console.log('triggered')
-            if(self.$store.getters.getChecklists.length == 0) {
-                self.found = false;
+    methods: {
+        selectChecklist: function(checklist) {
+            this.$emit('checklistSelected', checklist);
+        }
+    },
+    watch: {
+        finishedLoad: function(value) {
+            if(this.$store.getters.getChecklists.length == 0) {
+                this.found = false;
+                this.loading = false;
             } else {
-                self.found = true;
-                self.checklists = self.$store.getters.getChecklists;
+                this.found = true;
+                this.checklists = this.$store.getters.getChecklists;
+                this.loading = false;
             }
-        }, 250);
+        } 
     }
 }
 </script>
@@ -100,7 +80,6 @@ export default {
     .checklist-view-container {
         width: 960px;
         height: fit-content;
-        margin-left: 5em;
         background-color: #fff;
         border-radius: 10px;
     }
@@ -179,8 +158,86 @@ export default {
         }
     }
 
+    .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 300px;
+        width: 100%;
+
+        p {
+            font-family: 'Roboto';
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
+
     .topList {
         border-top: 1px solid #ccc;
+    }
+
+    /* loading animation styles */
+
+    .sk-cube-grid {
+        width: 60px;
+        height: 60px;
+    }
+
+    .sk-cube-grid .sk-cube {
+        width: 33%;
+        height: 33%;
+        background-color: #333;
+        float: left;
+        -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+        animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+    }
+    .sk-cube-grid .sk-cube1 {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s; }
+    .sk-cube-grid .sk-cube2 {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.3s; }
+    .sk-cube-grid .sk-cube3 {
+        -webkit-animation-delay: 0.4s;
+        animation-delay: 0.4s; }
+    .sk-cube-grid .sk-cube4 {
+        -webkit-animation-delay: 0.1s;
+        animation-delay: 0.1s; }
+    .sk-cube-grid .sk-cube5 {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s; }
+    .sk-cube-grid .sk-cube6 {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.3s; }
+    .sk-cube-grid .sk-cube7 {
+        -webkit-animation-delay: 0s;
+        animation-delay: 0s; }
+    .sk-cube-grid .sk-cube8 {
+        -webkit-animation-delay: 0.1s;
+        animation-delay: 0.1s; }
+    .sk-cube-grid .sk-cube9 {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s; }
+
+    @-webkit-keyframes sk-cubeGridScaleDelay {
+        0%, 70%, 100% {
+            -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+        } 35% {
+            -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1); 
+        }
+    }
+
+    @keyframes sk-cubeGridScaleDelay {
+        0%, 70%, 100% {
+            -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+        } 35% {
+            -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+        } 
     }
 </style>
 

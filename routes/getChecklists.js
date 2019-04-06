@@ -8,7 +8,6 @@ module.exports = (app, mongoose) => {
         Checklists.find({"id": req.body.id}, (err, checklist) => {
             if(err) console.log(err);
 
-            console.log(checklist);
             checklistFound = checklist;
             res.json({completed: true, checklist: checklistFound});
         })

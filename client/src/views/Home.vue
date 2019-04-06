@@ -8,20 +8,25 @@
         </div>
         <div class="checklist-container">
             <SideMenu :checklistView="checklist" @expand="checklist = true"></SideMenu>
-            <CheckListView />
+            <div class="checklist-views-container" >
+                <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" :finishedLoad="completedFetch" />
+                <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     import SideMenu from '../components/side-menu.vue';
-    import CheckListView from '../components/list-view.vue';
+    import ListView from '../components/list-view.vue';
+    import CheckListView from '../components/checklist-view.vue';
     import axios from 'axios';
 
     export default {
         name: 'Home',
         components: {
             SideMenu,
+            ListView,
             CheckListView
         },
         mounted() {
@@ -30,19 +35,38 @@
             axios.post('http://localhost:3000/getChecklists', {id: userId})
                 .then(response => {
                     this.$store.commit('insertChecklists', response.data.checklist);
+                    this.completedFetch = true;
                 }).catch(e => {
                     console.log(e);
                 })
         },
+        methods: {
+            showChecklist: function(checklist) {
+                this.selectedChecklistId = checklist._id;
+                this.viewType = 'checklist';
+            }
+        },
         data() {
             return {
-                checklist: false
+                checklist: false,
+                completedFetch: false,
+                viewType: 'list',
+                selectedChecklistId: ''
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+    .checklist-views-container {
+        width: 960px;
+        max-height: 1000px;
+        margin-left: 5em;
+        background-color: #fff;
+        border-radius: 10px;
+        transition: height 0.3s ease-out;
+    }
+
     .checklist-page-container {
         width: 100%;
         height: 100%;
@@ -84,7 +108,6 @@
 
     .checklist-container {
         width: 100em;
-        height: 100%;
         margin: 0 auto;
         padding: 4em 5em;
         display: flex;

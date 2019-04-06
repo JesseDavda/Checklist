@@ -19,6 +19,11 @@ export default new Vuex.Store({
     },
     getChecklists: function(state) {
       return state.checklists;
+    },
+    getSingleChecklist: state => (checklistId) => {
+      return state.checklists.find(checklist => {
+        return checklist._id === checklistId;
+      });
     }
   }
 })
