@@ -8,12 +8,6 @@
         </div>
         <div v-if="checklistView" class="menu-action-container">
             <div class="icon-container topIconContainer">
-                <i class="fa fa-plus" />
-            </div>
-            <h3>Add item</h3>
-        </div>
-        <div v-if="checklistView" class="menu-action-container">
-            <div class="icon-container">
                 <i class="far fa-clock" />
             </div>
             <h3>Schedule checklist</h3>
@@ -55,8 +49,8 @@ export default {
 
 <style lang="scss" scoped>
     .side-menu-container {
-        height: 80px;
-        width: 400px;
+        height: 70px;
+        width: 350px;
         background-color: #fff;
         border-radius: 10px;
         transition: height 0.1s ease-out;
@@ -64,7 +58,7 @@ export default {
 
     .menu-action-container {
         width: 100%;
-        height: 80px;
+        height: 70px;
         display: flex;
         align-items: center;
         border-radius: 10px;
@@ -72,15 +66,15 @@ export default {
         
         h3 {
             font-family: 'Roboto';
-            line-height: 30px;
-            font-size: 26px;
+            font-size: 20px;
             font-weight: 400;
             margin-left: 20px;
+            color: #1A1A1D;
         }
 
         i {
             color: #1A1A1D;
-            zoom: 1.7;
+            zoom: 1.4;
         }
 
         &:hover {
@@ -88,6 +82,10 @@ export default {
             color: #fff;
             background-color: rgba(195,7,63,1);
             border-radius: 10px;
+
+            h3 {
+                color: #fff;
+            }
         }
     }
 
@@ -114,10 +112,6 @@ export default {
     }
 
     .extraHeight {
-        height: 400px;
-    }
-
-    .addMenuAction {
-        opacity: 1.0;
+        height: 280px;
     }
 </style>

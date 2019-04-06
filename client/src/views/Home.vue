@@ -16,12 +16,23 @@
 <script>
     import SideMenu from '../components/side-menu.vue';
     import CheckListView from '../components/list-view.vue';
+    import axios from 'axios';
 
     export default {
         name: 'Home',
         components: {
             SideMenu,
             CheckListView
+        },
+        mounted() {
+            let userId = this.$store.getters.getCurrentLoggedInUserId;
+
+            axios.post('http://localhost:3000/getChecklists', {id: userId})
+                .then(response => {
+                    this.$store.commit('insertChecklists', response.data.checklist);
+                }).catch(e => {
+                    console.log(e);
+                })
         },
         data() {
             return {
