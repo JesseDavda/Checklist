@@ -25,6 +25,7 @@
                     <div class="checklist">
                         <i class="fal fa-list iconOne" />
                         <h3 class="checklist-name">{{ checklist.name }}</h3>
+                        <i class="fal fa-minus-octagon deleteIcon" @click="deleteChecklist(checklist._id, checklist)"/>
                         <i class="fal fa-chevron-circle-right iconTwo" />
                     </div>
                 </li>
@@ -51,6 +52,17 @@ export default {
     methods: {
         selectChecklist: function(checklist) {
             this.$emit('checklistSelected', checklist);
+        },
+        deleteChecklist: function(id, checklist) {
+            let postObj = {id: id};
+
+            axios.post('http://localhost:3000/deleteChecklist', postObj)
+                .then(() => {
+                    let position = this.checklist.indexOf(checklist);
+                    this.checklist.splice(position, 1);
+                }).catch(e => {
+                    console.log(e);
+                })
         }
     },
     watch: {
@@ -175,6 +187,11 @@ export default {
 
     .topList {
         border-top: 1px solid #ccc;
+    }
+
+    .deleteIcon {
+        position: absolute;
+        right: 50px;
     }
 
     /* loading animation styles */

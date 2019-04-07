@@ -1,7 +1,7 @@
 const mongoose = require('../db.js');
 const Checklists = mongoose.model('Checklists');
 
-module.exports = (app, mongoose) => {
+module.exports = (app) => {
     app.post('/getChecklists', (req, res) => {
         let checklistFound = {};
 
