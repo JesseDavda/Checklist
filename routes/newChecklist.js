@@ -9,7 +9,7 @@ module.exports = (app) => {
         return new Promise((resolve, reject) => {
             newChecklist.save()
             .then(savedChecklist => {
-                resolve();
+                resolve(savedChecklist);
             }).catch(e => {
                 reject(e);
             })
@@ -18,13 +18,14 @@ module.exports = (app) => {
 
     app.post('/createNewChecklist', async (req, res) => {
         let checklistData = req.body;
+        let checklistBody;
 
         try {
-            await saveNewChecklist(checklistData);
+            checklistBody = await saveNewChecklist(checklistData);
         } catch(e) {
             console.log(e);
         }
 
-        res.status(200).json({ completed: true });  
+        res.status(200).json({ completed: true, id: checklistBody._id });  
     })
 }

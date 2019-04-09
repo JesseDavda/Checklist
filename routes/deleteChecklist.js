@@ -7,8 +7,6 @@ module.exports = (app) => {
 
         Checklists.findOneAndDelete({_id: checklistId}, (err, doc) => {
             if(err) console.log(err);
-
-            console.log(doc, " was deleted");
         })
     })
 }

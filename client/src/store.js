@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentLoggedInUser: 452,
+    currentLoggedInUser: 1221,
     checklists: []
   },
   mutations: {

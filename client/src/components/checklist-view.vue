@@ -72,7 +72,7 @@
 
     .checklist-list-item {
         width: 100%;
-        height: 50px;
+        height: 40px;
         margin: 0 auto;
         display: flex;
         align-items: center;
