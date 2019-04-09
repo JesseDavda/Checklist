@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         newChecklist: function() {
-            this.$emit('expand');
+            this.$emit('createNewChecklist');
         }
     }
 }

@@ -7,10 +7,11 @@
             </div>
         </div>
         <div class="checklist-container">
-            <SideMenu :checklistView="checklist" @expand="checklist = true"></SideMenu>
+            <SideMenu :checklistView="expandSideMenu" @createNewChecklist="newChecklist"></SideMenu>
             <div class="checklist-views-container" >
                 <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" :finishedLoad="completedFetch" />
                 <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" />
+                <NewListView v-if="viewType === 'newList'" />
             </div>
         </div>
     </div>
@@ -20,6 +21,7 @@
     import SideMenu from '../components/side-menu.vue';
     import ListView from '../components/list-view.vue';
     import CheckListView from '../components/checklist-view.vue';
+    import NewListView from '../components/new-list-view.vue';
     import axios from 'axios';
 
     export default {
@@ -27,7 +29,8 @@
         components: {
             SideMenu,
             ListView,
-            CheckListView
+            CheckListView,
+            NewListView
         },
         mounted() {
             let userId = this.$store.getters.getCurrentLoggedInUserId;
@@ -44,11 +47,15 @@
             showChecklist: function(checklist) {
                 this.selectedChecklistId = checklist._id;
                 this.viewType = 'checklist';
+            },
+            newChecklist: function() {
+                this.viewType = 'newList';
+                this.expandSideMenu = true;
             }
         },
         data() {
             return {
-                checklist: false,
+                expandSideMenu: false,
                 completedFetch: false,
                 viewType: 'list',
                 selectedChecklistId: ''

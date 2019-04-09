@@ -103,9 +103,10 @@ export default {
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        padding: 40px;
 
         i {
-            zoom: 15;
+            zoom: 12;
             color: rgba(0, 0, 0, 0.2);
         }
 
