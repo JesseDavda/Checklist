@@ -5,7 +5,7 @@ module.exports = (app) => {
     app.post('/getChecklists', (req, res) => {
         let checklistFound = {};
 
-        Checklists.find({"id": req.body.id}, (err, checklist) => {
+        Checklists.find({"userId": req.body.id}, (err, checklist) => {
             if(err) console.log(err);
 
             checklistFound = checklist;

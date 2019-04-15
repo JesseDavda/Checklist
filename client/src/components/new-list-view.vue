@@ -1,5 +1,6 @@
 <template>
     <div class="new-list-view-container">
+        <i class="fal fa-angle-left" @click="back"/>
         <h2 v-if="!nameEditMode" @click="editName" >{{ checklistTemplate.name }}</h2>
         <div v-if="nameEditMode" class="input-container">
             <input class="name-input" type="text" v-model="checklistTemplate.name" />
@@ -30,9 +31,14 @@
     export default {
         name: "NewListView",
         mounted() {
-
+            console.log(this.$store.getters.getCurrentLoggedInUserId);
+            this.checklistTemplate.id = this.$store.getters.getCurrentLoggedInUserId;
+            this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
         },
         methods: {
+            back: function() {
+                this.$emit('backFromNewList');
+            },
             editName: function() {
                 this.nameEditMode = !this.nameEditMode;
                 this.saveChecklist();
@@ -56,10 +62,13 @@
                 this.saveChecklist();
             },
             saveChecklist: function() {
+                console.log(this.currentUserId);
+                this.checklistTemplate.userId = this.currentUserId;
                 if(this.firstTimeSave) { 
+                    console.log(this.checklistTemplate);
                     axios.post('http://localhost:3000/createNewChecklist', this.checklistTemplate)
                         .then((response) => {
-                            console.log(response.data.completed);
+                            console.log("Saved first time response: ", response.data);
                             this.checklistTemplate._id = response.data.id;
                         }).catch(e => {
                             console.log(e);
@@ -67,7 +76,11 @@
 
                     this.firstTimeSave = false;
                 } else {
+                    console.log(this.checklistTemplate);
                     axios.post('http://localhost:3000/saveChecklist', {checklist: this.checklistTemplate})
+                        .then(response => {
+                            console.log('Saved rest of time response: ', response.data);
+                        })
                         .catch(e => {
                             console.log(e);
                         })
@@ -76,11 +89,12 @@
         },
         data() {
             return {
+                currentUserId: "",
                 firstTimeSave: true,
                 nameEditMode: false,
                 newTaskName: "",
                 checklistTemplate: {
-                    id: 1221,
+                    userId: "",
                     name: "Checklist Name",
                     checklistItems: []
                 }
@@ -99,8 +113,23 @@
         margin: 0;
     }
 
+    .fa-angle-left {
+        position: absolute;
+        zoom: 3;
+        top: 10px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .input-container {
+        margin-left: 40px;
+    }
+
     .new-list-view-container {
         padding: 35px;
+        position: relative;
         
         h2 {
             margin: 0;
@@ -109,6 +138,7 @@
             font-size: 35px;
             color: #1a1a1d;
             margin-bottom: 40px;
+            margin-left: 40px;
         }
     }
 

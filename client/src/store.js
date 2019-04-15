@@ -5,12 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentLoggedInUser: 1221,
+    currentLoggedInUser: "",
     checklists: []
   },
   mutations: {
     insertChecklists: function(state, checklistsToAdd) {
       state.checklists = checklistsToAdd;
+    },
+    setCurrentUser: function(state, id) {
+      state.currentLoggedInUser = id;
     }
   },
   getters: {

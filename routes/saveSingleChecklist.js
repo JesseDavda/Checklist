@@ -8,7 +8,7 @@ module.exports = (app) => {
         Checklists.findOneAndUpdate(query, req.body.checklist, {upsert: true}, (err, doc) => {
             if(err) console.log(err);
 
-            res.json({id: doc._id});
+            res.status(200).json({id: doc._id, document: doc});
         })
     });
 }

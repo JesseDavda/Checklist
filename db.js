@@ -5,11 +5,17 @@ mongoose.connect('mongodb://localhost/checklist', { useNewUrlParser: true });
 console.log('Connected to the mongo database');
 
 const checklistSchema = new Schema({
-    id: Number,
+    userId: String,
     name: String,
     checklistItems: Array
 })
 
+const userSchema = new Schema({
+    email: String,
+    password: String
+})
+
 const Checklists = mongoose.model('Checklists', checklistSchema, 'Checklists');
+const UserData = mongoose.model('UserData', userSchema, 'UserData');
 
 module.exports = mongoose;

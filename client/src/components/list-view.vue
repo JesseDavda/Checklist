@@ -42,6 +42,16 @@ export default {
     props: [
         'finishedLoad'
     ],
+    mounted() {
+        if(this.$store.getters.getChecklists.length == 0) {
+            this.found = false;
+            this.loading = false;
+        } else {
+            this.found = true;
+            this.checklists = this.$store.getters.getChecklists;
+            this.loading = false;
+        }
+    },
     data() {
         return {
             found: false,

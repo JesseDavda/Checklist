@@ -2,7 +2,7 @@
     <div class="checklist-page-container" >
         <div class="checklist-header">
             <div class="checklist-header-container">
-                <i class="fa fa-th-list" />
+                <i class="fas fa-dice-d20" />
                 <h1>checklist</h1>
             </div>
         </div>
@@ -11,7 +11,7 @@
             <div class="checklist-views-container" >
                 <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" :finishedLoad="completedFetch" />
                 <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" />
-                <NewListView v-if="viewType === 'newList'" />
+                <NewListView v-if="viewType === 'newList'" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
             </div>
         </div>
     </div>
@@ -37,6 +37,7 @@
 
             axios.post('http://localhost:3000/getChecklists', {id: userId})
                 .then(response => {
+                    console.log(response);
                     this.$store.commit('insertChecklists', response.data.checklist);
                     this.completedFetch = true;
                 }).catch(e => {
@@ -44,6 +45,18 @@
                 })
         },
         methods: {
+            manualCheck: function() {
+                let userId = this.$store.getters.getCurrentLoggedInUserId;
+
+                axios.post('http://localhost:3000/getChecklists', {id: userId})
+                    .then(response => {
+                        console.log(response);
+                        this.$store.commit('insertChecklists', response.data.checklist);
+                        this.completedFetch = true;
+                    }).catch(e => {
+                        console.log(e);
+                    })
+            },
             showChecklist: function(checklist) {
                 this.selectedChecklistId = checklist._id;
                 this.viewType = 'checklist';
