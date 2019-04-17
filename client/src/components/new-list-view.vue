@@ -31,7 +31,6 @@
     export default {
         name: "NewListView",
         mounted() {
-            console.log(this.$store.getters.getCurrentLoggedInUserId);
             this.checklistTemplate.id = this.$store.getters.getCurrentLoggedInUserId;
             this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
         },
@@ -62,13 +61,10 @@
                 this.saveChecklist();
             },
             saveChecklist: function() {
-                console.log(this.currentUserId);
                 this.checklistTemplate.userId = this.currentUserId;
                 if(this.firstTimeSave) { 
-                    console.log(this.checklistTemplate);
                     axios.post('http://localhost:3000/createNewChecklist', this.checklistTemplate)
                         .then((response) => {
-                            console.log("Saved first time response: ", response.data);
                             this.checklistTemplate._id = response.data.id;
                         }).catch(e => {
                             console.log(e);
@@ -78,9 +74,6 @@
                 } else {
                     console.log(this.checklistTemplate);
                     axios.post('http://localhost:3000/saveChecklist', {checklist: this.checklistTemplate})
-                        .then(response => {
-                            console.log('Saved rest of time response: ', response.data);
-                        })
                         .catch(e => {
                             console.log(e);
                         })

@@ -1,5 +1,6 @@
 <template>
     <div class="checklist-view-container">
+        <i @click="back" class="fal fa-angle-left" />
         <h2>{{checklist.name}}</h2>
         <ul>
             <li v-for="item in checklistItems" :key="checklistItems.indexOf(item)">
@@ -27,15 +28,16 @@
         },
         methods: {
             saveAndUpdateChecklist: function(value, position) {
-                console.log('making the call to save the checklist')
 
                 this.checklist.checklistItems[position].completed = value;
-                console.log(this.checklist);
 
                 axios.post('http://localhost:3000/saveChecklist', {checklist: this.checklist})
                     .catch(e => {
                         console.log(e);
                     })
+            },
+            back: function() {
+                this.$emit('backFromChecklist');
             }
         },
         data() {
@@ -56,10 +58,21 @@
         padding: 0;
     }
 
+    .fa-angle-left {
+        position: absolute;
+        zoom: 3;
+        top: 10px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .checklist-view-container {
         display: flex;
         flex-direction: column;
         padding: 35px;
+        position: relative;
 
         h2 {
             margin: 0;
@@ -67,6 +80,7 @@
             font-weight: 500;
             font-size: 35px;
             color: #1a1a1d;
+            margin-left: 30px;
         }
     }
 

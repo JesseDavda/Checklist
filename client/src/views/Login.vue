@@ -31,9 +31,26 @@
 
 <script>
   import axios from 'axios';
+  import moment from 'moment';
 
   export default {
     name: 'Login',
+    beforeCreate: function() {
+      if(this.$session.exists()) {
+        let time = moment.duration(moment().diff(this.$session.get('startTime')))
+        if(time.asDays() >= 20) {
+          this.$session.destroy();
+        } else {
+          let userId = this.$session.get("ID");
+
+          this.$store.commit('setCurrentUser', userId);
+          this.$router.push('checklists');
+        }
+      }
+    },
+    mounted() {
+      console.log('All the data in the current session: ', this.$session.getAll());
+    },
     methods: {
       login: function() {
         this.$router.push('checklists');
@@ -53,6 +70,10 @@
           .then(response => {
             if(response.data.completed) {
               this.$store.commit('setCurrentUser', response.data.accountId);
+
+              this.$session.start();
+              this.$session.set("ID", response.data.accountId);
+              this.$session.set("startTime", moment());
               this.$router.push('checklists');
             } else {
               this.loginDeclined = true;

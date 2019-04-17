@@ -3,11 +3,7 @@ const UserData = mongoose.model('UserData');
 const bcrypt = require('bcrypt');
 
 function comparePasswords(passwordPlain, passwordHash) {
-    return new Promise((resolve) => {
-        bcrypt.compare(passwordPlain, passwordHash).then(res => {
-            resolve(res)
-        })
-    });
+    return bcrypt.compare(passwordPlain, passwordHash).then(res => res);
 }
 
 function findUser(email, password) {

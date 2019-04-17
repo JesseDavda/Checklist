@@ -10,7 +10,7 @@
             <SideMenu :checklistView="expandSideMenu" @createNewChecklist="newChecklist"></SideMenu>
             <div class="checklist-views-container" >
                 <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" :finishedLoad="completedFetch" />
-                <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" />
+                <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list'"/>
                 <NewListView v-if="viewType === 'newList'" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
             </div>
         </div>
@@ -32,12 +32,29 @@
             CheckListView,
             NewListView
         },
+        beforeCreate: function() {
+            if(this.$session.exists()) {
+                let time = moment.duration(moment().diff(this.$session.get('startTime')))
+                
+                if(time.asDays() >= 20) {
+                    this.$session.destroy();
+                } else {
+                    let userId = this.$session.get("ID");
+
+                    this.$store.commit('setCurrentUser', userId);
+                    this.$router.push('checklists');
+                }
+            }
+        },
+        updated: function() {
+            console.log('getting checklists');
+            this.manualCheck();
+        },
         mounted() {
             let userId = this.$store.getters.getCurrentLoggedInUserId;
 
             axios.post('http://localhost:3000/getChecklists', {id: userId})
                 .then(response => {
-                    console.log(response);
                     this.$store.commit('insertChecklists', response.data.checklist);
                     this.completedFetch = true;
                 }).catch(e => {
@@ -50,7 +67,6 @@
 
                 axios.post('http://localhost:3000/getChecklists', {id: userId})
                     .then(response => {
-                        console.log(response);
                         this.$store.commit('insertChecklists', response.data.checklist);
                         this.completedFetch = true;
                     }).catch(e => {
@@ -64,6 +80,11 @@
             newChecklist: function() {
                 this.viewType = 'newList';
                 this.expandSideMenu = true;
+            }
+        },
+        watch: {
+            viewType: function() {
+                this.manualCheck();
             }
         },
         data() {

@@ -5,14 +5,9 @@ const bcrypt = require('bcrypt');
 function saveUser(userBody) {
     let newUser = new UserData(userBody);
 
-    return new Promise((resolve, reject) => {
-        newUser.save()
-        .then(savedUser => {
-            resolve(savedUser);
-        }).catch(e => {
-            reject(e);
-        })
-    });
+    return newUser.save()
+        .then(savedUser => savedUser)
+        .catch(e => e);
 }
 
 module.exports = app => {
