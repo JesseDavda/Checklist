@@ -20,17 +20,22 @@
     export default {
         name: "CheckListView",
         props: [
-            "checklistId"
+            "checklistId",
+            "resetChecklist"
         ],
         mounted() {
             this.checklist = this.$store.getters.getSingleChecklist(this.checklistId);
             this.checklistItems = this.checklist.checklistItems;
+            this.$emit('currentChecklist', this.checklist);
         },
         methods: {
             saveAndUpdateChecklist: function(value, position) {
 
                 this.checklist.checklistItems[position].completed = value;
 
+                this.saveChecklist();
+            },
+            saveChecklist: function() {
                 axios.post('http://localhost:3000/saveChecklist', {checklist: this.checklist})
                     .catch(e => {
                         console.log(e);
@@ -38,6 +43,16 @@
             },
             back: function() {
                 this.$emit('backFromChecklist');
+            }
+        },
+        watch: {
+            resetChecklist: function() {
+                console.log('recieved propchange')
+                this.checklist.checklistItems.forEach(item => {
+                    item.completed = false;
+                });
+
+                this.saveChecklist();
             }
         },
         data() {

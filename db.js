@@ -12,6 +12,8 @@ const checklistSchema = new Schema({
 
 const userSchema = new Schema({
     email: String,
+    firstName: String,
+    lastName: String,
     password: String
 })
 

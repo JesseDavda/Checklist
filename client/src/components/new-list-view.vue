@@ -30,9 +30,18 @@
 
     export default {
         name: "NewListView",
+        props: [
+            "fullChecklist"
+        ],
         mounted() {
-            this.checklistTemplate.id = this.$store.getters.getCurrentLoggedInUserId;
-            this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
+            if(_.isEmpty(this.fullChecklist)) {
+                this.checklistTemplate.id = this.$store.getters.getCurrentLoggedInUserId;
+                this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
+            } else {
+                this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
+                this.checklistTemplate = this.fullChecklist;
+                this.firstTimeSave = false;
+            }
         },
         methods: {
             back: function() {

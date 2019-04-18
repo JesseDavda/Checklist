@@ -7,11 +7,11 @@
             </div>
         </div>
         <div class="checklist-container">
-            <SideMenu :checklistView="expandSideMenu" @createNewChecklist="newChecklist"></SideMenu>
+            <SideMenu :checklistView="expandSideMenu" @createNewChecklist="newChecklist" @resetChecklist="resetChecklist"></SideMenu>
             <div class="checklist-views-container" >
-                <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" :finishedLoad="completedFetch" />
-                <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list'"/>
-                <NewListView v-if="viewType === 'newList'" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
+                <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" @editList="editList" />
+                <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list', expandSideMenu = false" :resetChecklist="resetChecklistSignal"/>
+                <NewListView v-if="viewType === 'newList'" :fullChecklist="this.editChecklist" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
     import ListView from '../components/list-view.vue';
     import CheckListView from '../components/checklist-view.vue';
     import NewListView from '../components/new-list-view.vue';
+    import moment from 'moment';
     import axios from 'axios';
 
     export default {
@@ -38,61 +39,44 @@
                 
                 if(time.asDays() >= 20) {
                     this.$session.destroy();
+                    this.$router.push('login');
                 } else {
                     let userId = this.$session.get("ID");
 
                     this.$store.commit('setCurrentUser', userId);
                     this.$router.push('checklists');
                 }
+            } else {
+                this.$router.push('/');
             }
         },
-        updated: function() {
-            console.log('getting checklists');
-            this.manualCheck();
-        },
-        mounted() {
-            let userId = this.$store.getters.getCurrentLoggedInUserId;
-
-            axios.post('http://localhost:3000/getChecklists', {id: userId})
-                .then(response => {
-                    this.$store.commit('insertChecklists', response.data.checklist);
-                    this.completedFetch = true;
-                }).catch(e => {
-                    console.log(e);
-                })
-        },
         methods: {
-            manualCheck: function() {
-                let userId = this.$store.getters.getCurrentLoggedInUserId;
-
-                axios.post('http://localhost:3000/getChecklists', {id: userId})
-                    .then(response => {
-                        this.$store.commit('insertChecklists', response.data.checklist);
-                        this.completedFetch = true;
-                    }).catch(e => {
-                        console.log(e);
-                    })
-            },
             showChecklist: function(checklist) {
                 this.selectedChecklistId = checklist._id;
                 this.viewType = 'checklist';
+                this.expandSideMenu = true;
             },
             newChecklist: function() {
                 this.viewType = 'newList';
                 this.expandSideMenu = true;
-            }
-        },
-        watch: {
-            viewType: function() {
-                this.manualCheck();
+            },
+            editList: function(checklist) {
+                this.editChecklist = checklist;
+                this.viewType = 'newList';
+                this.expandSideMenu = true;
+            },
+            resetChecklist: function() {
+                console.log('recieved emmission')
+                this.resetChecklistSignal = !this.resetChecklistSignal;
             }
         },
         data() {
             return {
                 expandSideMenu: false,
-                completedFetch: false,
                 viewType: 'list',
-                selectedChecklistId: ''
+                editChecklist: {},
+                selectedChecklistId: '',
+                resetChecklistSignal: false
             }
         }
     }

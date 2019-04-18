@@ -21,12 +21,13 @@
         <div class="lists-container" v-if="found && !loading">
             <h2>My Checklists</h2>
             <ul>
-                <li v-for="checklist in checklists" :key="checklist._id" @click="selectChecklist(checklist)">
+                <li v-for="checklist in checklists" :key="checklist._id">
                     <div class="checklist">
                         <i class="fal fa-list iconOne" />
                         <h3 class="checklist-name">{{ checklist.name }}</h3>
-                        <i class="fal fa-minus-octagon deleteIcon" @click="deleteChecklist(checklist._id, checklist)"/>
-                        <i class="fal fa-chevron-circle-right iconTwo" />
+                        <div @click="editChecklist(checklist)" class="editIcon"><i class="fal fa-pen-square" /></div>
+                        <div @click="deleteChecklist(checklist._id, checklist)" class="deleteIcon"><i class="fal fa-minus-octagon"/></div>
+                        <div @click="selectChecklist(checklist)"  class="iconTwo"><i class="fal fa-chevron-circle-right" /></div>
                     </div>
                 </li>
             </ul>
@@ -39,18 +40,8 @@ import axios from 'axios';
 
 export default {
     name: "ListView",
-    props: [
-        'finishedLoad'
-    ],
     mounted() {
-        if(this.$store.getters.getChecklists.length == 0) {
-            this.found = false;
-            this.loading = false;
-        } else {
-            this.found = true;
-            this.checklists = this.$store.getters.getChecklists;
-            this.loading = false;
-        }
+        this.getChecklists();
     },
     data() {
         return {
@@ -58,6 +49,9 @@ export default {
             checklists: {},
             loading: true
         }
+    },
+    updated: function() {
+        this.getChecklists();
     },
     methods: {
         selectChecklist: function(checklist) {
@@ -70,22 +64,33 @@ export default {
                 .then(() => {
                     let position = this.checklist.indexOf(checklist);
                     this.checklist.splice(position, 1);
+                    this.getChecklists();
                 }).catch(e => {
                     console.log(e);
                 })
+        },
+        getChecklists: function() {
+            let userId = this.$store.getters.getCurrentLoggedInUserId;
+
+            axios.post('http://localhost:3000/getChecklists', {id: userId})
+                .then(response => {
+                    this.$store.commit('insertChecklists', response.data.checklist);
+                    this.checklists = response.data.checklist;
+                }).then(() => {
+                    if(this.checklists.length === 0) {
+                        this.found = false;
+                        this.loading = false;
+                    } else {
+                        this.found = true;
+                        this.loading = false;
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
+        },
+        editChecklist: function(checklist) {
+            this.$emit('editList', checklist)
         }
-    },
-    watch: {
-        finishedLoad: function(value) {
-            if(this.$store.getters.getChecklists.length == 0) {
-                this.found = false;
-                this.loading = false;
-            } else {
-                this.found = true;
-                this.checklists = this.$store.getters.getChecklists;
-                this.loading = false;
-            }
-        } 
     }
 }
 </script>
@@ -169,6 +174,11 @@ export default {
         .iconTwo {
             position: absolute;
             right: 10px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         &:hover {
@@ -203,6 +213,25 @@ export default {
     .deleteIcon {
         position: absolute;
         right: 50px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .editIcon {
+        position: absolute;
+        right: 90px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+            zoom: 1.5;
+        }
     }
 
     /* loading animation styles */

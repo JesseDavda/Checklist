@@ -19,11 +19,15 @@
               <h3>Continue with facebook</h3>
             </div>
         </div>
-        <div v-if="!loginScreen" class="modal-right">
+        <div v-if="!loginScreen" class="modal-right signup">
           <h2 class="getOnBoard">Get on board.</h2>
-          <input type="text" v-model="email">
-          <input type="text" v-model="password">
-          <div class="submit" @click="signUpPost"><p>signup</p></div>
+          <div id="breaker-signup"></div>
+          <input type="text" placeholder="First name" v-model="firstName">
+          <input type="text" placeholder="Second name" v-model="lastName">
+          <input type="text" placeholder="Email" :class="{ greenBorder: emailValid }" v-model="emailSignup">
+          <input type="password" placeholder="Password" v-model="passwordSignup">
+          <p id="terms" class="signup">By creating account you agree to checklist's terms and conditions and privacy policy.</p>
+          <div class="login-button" @click="signUpPost"><p>signup</p></div>
         </div>
       </div>
     </div>
@@ -47,9 +51,6 @@
           this.$router.push('checklists');
         }
       }
-    },
-    mounted() {
-      console.log('All the data in the current session: ', this.$session.getAll());
     },
     methods: {
       login: function() {
@@ -86,8 +87,10 @@
       signUpPost: function() {
 
         let data = {
-          email: this.email,
-          password: this.password
+          email: this.emailSignup,
+          password: this.passwordSignup,
+          firstName: this.firstName,
+          lastName: this.lastName
         }
 
         console.log(data);
@@ -100,12 +103,32 @@
           })
       }
     },
+    watch: {
+      emailSignup: function(value) {
+        let testRegEx = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}/i;
+
+        if(testRegEx.test(value)) {
+          console.log('passed');
+          this.emailValid = true;
+        } else {
+          console.log('failed')
+          this.emailValid = false;
+        }
+
+      }
+    },
+
     data() {
       return {
         loading: false,
         loginScreen: true,
         email: "",
         password: "",
+        emailSignup: "",
+        passwordSignup: "",
+        firstName: "",
+        lastName: "",
+        emailValid: false,
         loginMessage: "",
         loginDeclined: false
       }
@@ -120,10 +143,6 @@
     color: #e84118;
     font-family: 'Roboto';
     font-weight: 300;
-  }
-
-  .getOnBoard {
-    text-align: left;
   }
 
   .login-container {
@@ -280,5 +299,53 @@
       color: #fff;
       margin: 0;
     }
+  }
+
+  .greenBorder {
+    border-bottom: 2px solid #4cd137 !important;
+  }
+
+  .redBorder {
+    border-bottom: 2px solid #bb0000 !important;
+  }
+
+  .signup {
+      input {
+        width: 100%;
+        height: 45px;
+        margin-top: 15px;
+        font-family: 'Roboto';
+        font-weight: 300;
+        font-size: 16px;
+        padding-left: 10px;
+        border: none;
+        transition: all 0.2s;
+        background-color: #eee;
+
+        &:focus {
+          outline: none;
+          border-bottom: 2px solid #1A1A1D;
+        }
+      }
+
+      h2 {
+        text-align: left;
+      }
+  }
+
+  .getOnBoard {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  #breaker-signup {
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+    margin: 5px 0;
+  }
+
+  #terms {
+    text-align: center;
   }
 </style>

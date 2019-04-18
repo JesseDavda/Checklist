@@ -12,7 +12,7 @@
             </div>
             <h3>Schedule checklist</h3>
         </div>
-        <div v-if="checklistView" class="menu-action-container">
+        <div @click="resetChecklist()" v-if="checklistView" class="menu-action-container">
             <div class="icon-container">
                 <i class="fa fa-sync" />
             </div>
@@ -42,6 +42,10 @@ export default {
     methods: {
         newChecklist: function() {
             this.$emit('createNewChecklist');
+        },
+        resetChecklist: function() {
+            console.log('emmitted resetChecklist')
+            this.$emit('resetChecklist');
         }
     }
 }
