@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: '/checklists',
-      name: 'checklist',
+      name: 'checklists',
       component: Home
     }
   ]

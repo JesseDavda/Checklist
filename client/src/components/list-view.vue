@@ -20,17 +20,24 @@
         </div>
         <div class="lists-container" v-if="found && !loading">
             <h2>My Checklists</h2>
-            <ul>
-                <li v-for="checklist in checklists" :key="checklist._id">
-                    <div class="checklist">
+            <div class="search-bar">
+                <input type="text" placeholder="Search for a checklist" />
+            </div>
+            <ul class="checklists-container">
+                <li v-for="checklist in checklists" :key="checklist._id"> 
+                    <div class="checklist" :style="{backgroundColor: checklist.colour}" @click="selectChecklist(checklist)">
                         <i class="fal fa-list iconOne" />
                         <h3 class="checklist-name">{{ checklist.name }}</h3>
                         <div @click="editChecklist(checklist)" class="editIcon"><i class="fal fa-pen-square" /></div>
                         <div @click="deleteChecklist(checklist._id, checklist)" class="deleteIcon"><i class="fal fa-minus-octagon"/></div>
                         <div @click="selectChecklist(checklist)"  class="iconTwo"><i class="fal fa-chevron-circle-right" /></div>
+                        <div @click="deleteChecklist(checklist)" class="delete"><i class="fal fa-window-minimize" /></div>
                     </div>
                 </li>
             </ul>
+            <div class="mobile-content new-list-button" @click="createChecklist">
+                <p>Create New Checklist</p>
+            </div>
         </div>
     </div>
 </template>
@@ -49,9 +56,6 @@ export default {
             checklists: {},
             loading: true
         }
-    },
-    updated: function() {
-        this.getChecklists();
     },
     methods: {
         selectChecklist: function(checklist) {
@@ -90,18 +94,31 @@ export default {
         },
         editChecklist: function(checklist) {
             this.$emit('editList', checklist)
+        },
+        createChecklist: function() {
+            this.$emit('newChecklist');
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+    .delete {
+        display: none;  
+    }
+
     li {
         list-style-type: none;
     }
 
     ul {
         padding: 0;
+        max-height: 76%;
+        overflow-y: scroll;
+    }
+
+    .search-bar {
+        display: none;
     }
 
     .checklist-view-container {
@@ -136,6 +153,7 @@ export default {
         height: 100%;
         width: 100%;
         padding: 30px;
+        position: relative;
 
         h2 {
             margin: 0;
@@ -234,6 +252,28 @@ export default {
         }
     }
 
+    .new-list-button {
+        width: 80%;
+        height: 50px;
+        margin: 0 auto;
+        background-color: rgba(195,7,63,1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 10px;
+        left: 10%;
+        border-radius: 5px;
+        display: none;
+
+        p {
+            color: #fff;
+            font-family: 'Roboto';
+            font-weight: 600;
+            font-size: 18px;
+        }
+    }
+
     /* loading animation styles */
 
     .sk-cube-grid {
@@ -295,6 +335,100 @@ export default {
             -webkit-transform: scale3D(0, 0, 1);
             transform: scale3D(0, 0, 1);
         } 
+    }
+
+    /* Media Queries */
+
+    @media screen and (max-width: 420px) { 
+        .delete {
+            display: block;
+            position: absolute;
+            z-index: 1000;
+            top: 0;
+            zoom: 0.7;
+            right: 15px;
+            color: #ecf0f1;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 80px;
+
+            input {
+                width: 95%;
+                height: 40px;
+                border: none;
+                border-radius: 3px;
+                padding-left: 10px;
+                font-family: 'Roboto';
+                font-weight: 300;
+                font-size: 16px;
+
+                &:hover {
+                    outline: none;
+                }
+            }
+        }
+
+        .checklist-view-container, .lists-container {
+            background-color: #1A1A1D;
+        }
+
+        .lists-container {
+            padding: 10px;
+            padding-top: 20px;
+        }
+
+        .mobile-content {
+            display: flex;
+        }
+
+        .editIcon, .deleteIcon {
+            display: none;
+        }
+
+        .checklists-container {
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            margin-top: 0;
+
+            li {
+                width: 45%;
+            }
+        }
+
+        .checklist {
+            height: 100px;
+            width: 100%;
+            margin: 0;
+            border-radius: 10px;
+            border-bottom: 0;
+            position: relative;
+            margin-top: 10px;
+
+            .checklist-name {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                margin: 0;
+                font-weight: 300;
+            }
+
+            .iconOne, .iconTwo {
+                display: none;
+            }
+            color: #fff;
+
+        }
+
+        .lists-container > h2 {
+            margin-left: 10px;
+            color: #fff;
+        }
     }
 </style>
 

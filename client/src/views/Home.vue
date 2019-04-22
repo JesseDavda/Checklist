@@ -7,11 +7,11 @@
             </div>
         </div>
         <div class="checklist-container">
-            <SideMenu :checklistView="expandSideMenu" @createNewChecklist="newChecklist" @resetChecklist="resetChecklist"></SideMenu>
+            <SideMenu class="sideMenu" :checklistView="expandSideMenu" @createNewChecklist="newChecklist" @resetChecklist="resetChecklist"></SideMenu>
             <div class="checklist-views-container" >
-                <ListView v-if="viewType === 'list'" @checklistSelected="showChecklist" @editList="editList" />
-                <CheckListView v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list', expandSideMenu = false" :resetChecklist="resetChecklistSignal"/>
-                <NewListView v-if="viewType === 'newList'" :fullChecklist="this.editChecklist" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
+                <ListView class="mainView" v-if="viewType === 'list'" @checklistSelected="showChecklist" @editList="editList" @newChecklist="newChecklist"/>
+                <CheckListView class="mainView" v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list', expandSideMenu = false" :resetChecklist="resetChecklistSignal"/>
+                <NewListView class="mainView" v-if="viewType === 'newList'" :fullChecklist="this.editChecklist" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
             </div>
         </div>
     </div>
@@ -23,7 +23,6 @@
     import CheckListView from '../components/checklist-view.vue';
     import NewListView from '../components/new-list-view.vue';
     import moment from 'moment';
-    import axios from 'axios';
 
     export default {
         name: 'Home',
@@ -66,7 +65,6 @@
                 this.expandSideMenu = true;
             },
             resetChecklist: function() {
-                console.log('recieved emmission')
                 this.resetChecklistSignal = !this.resetChecklistSignal;
             }
         },
@@ -136,6 +134,36 @@
         margin: 0 auto;
         padding: 4em 5em;
         display: flex;
+    }
+
+    @media screen and (max-width: 420px) {
+
+        .checklist-header {
+            display: none;
+        }
+
+        .checklist-container {
+            padding: 0 30px;
+        }
+
+        .sideMenu {
+            display: none;
+        }
+
+        .mainView, .checklist-container, .checklist-views-container {
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+        }
+
+        .checklist-page-container {
+            padding: 5px;
+        }
+
+        .checklist-views-container {
+            margin-left: 0;
+            border-radius: 5px;
+        }
     }
 </style>
 

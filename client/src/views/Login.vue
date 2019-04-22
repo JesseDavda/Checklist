@@ -69,12 +69,16 @@
 
         axios.post('http://localhost:3000/login', loginData)
           .then(response => {
+            console.log(response);
             if(response.data.completed) {
+              console.log('creating the current user')
               this.$store.commit('setCurrentUser', response.data.accountId);
-
+              console.log('starting the session');
               this.$session.start();
+              console.log('setting session details');
               this.$session.set("ID", response.data.accountId);
               this.$session.set("startTime", moment());
+              console.log('pushing to checklists');
               this.$router.push('checklists');
             } else {
               this.loginDeclined = true;
@@ -117,7 +121,6 @@
 
       }
     },
-
     data() {
       return {
         loading: false,

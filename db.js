@@ -7,7 +7,8 @@ console.log('Connected to the mongo database');
 const checklistSchema = new Schema({
     userId: String,
     name: String,
-    checklistItems: Array
+    checklistItems: Array,
+    colour: String
 })
 
 const userSchema = new Schema({

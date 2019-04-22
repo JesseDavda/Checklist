@@ -1,7 +1,9 @@
 <template>
     <div class="checklist-view-container">
-        <i @click="back" class="fal fa-angle-left" />
-        <h2>{{checklist.name}}</h2>
+        <div class="checklist-title-container">
+            <i @click="back" class="fal fa-angle-left" />
+            <h2>{{checklist.name}}</h2>
+        </div>
         <ul>
             <li v-for="item in checklistItems" :key="checklistItems.indexOf(item)">
                 <div class="checklist-list-item" :class="{ green: item.completed }" @click="saveAndUpdateChecklist(!item.completed, checklistItems.indexOf(item))">
@@ -11,14 +13,19 @@
                 </div>
             </li>
         </ul>
+        <MobileNav class="mobile-nav" @resetChecklist="resetChecklistFunction" />
     </div>
 </template>
 
 <script>
     import axios from 'axios';
+    import MobileNav from '../components/bottom-mobile-menu.vue';
 
     export default {
         name: "CheckListView",
+        components: {
+            MobileNav
+        },
         props: [
             "checklistId",
             "resetChecklist"
@@ -30,7 +37,6 @@
         },
         methods: {
             saveAndUpdateChecklist: function(value, position) {
-
                 this.checklist.checklistItems[position].completed = value;
 
                 this.saveChecklist();
@@ -43,16 +49,19 @@
             },
             back: function() {
                 this.$emit('backFromChecklist');
-            }
-        },
-        watch: {
-            resetChecklist: function() {
-                console.log('recieved propchange')
-                this.checklist.checklistItems.forEach(item => {
+            },
+            resetChecklistFunction: function() {
+                 this.checklist.checklistItems.forEach(item => {
                     item.completed = false;
                 });
 
                 this.saveChecklist();
+            },
+        },
+        watch: {
+            resetChecklist: function() {
+                console.log('recieved propchange')
+                this.resetChecklistFunction();
             }
         },
         data() {
@@ -74,7 +83,6 @@
     }
 
     .fa-angle-left {
-        position: absolute;
         zoom: 3;
         top: 10px;
 
@@ -86,8 +94,8 @@
     .checklist-view-container {
         display: flex;
         flex-direction: column;
-        padding: 35px;
         position: relative;
+        padding: 0 10px;
 
         h2 {
             margin: 0;
@@ -96,6 +104,18 @@
             font-size: 35px;
             color: #1a1a1d;
             margin-left: 30px;
+        }
+    }
+
+    .checklist-title-container {
+        display: flex;
+        padding-top: 10px;
+        align-items: center;
+        padding-left: 10px;
+
+        h2 {
+            margin: 0;
+            margin-left: 10px;
         }
     }
 
@@ -139,5 +159,19 @@
         background-color: #2ecc71;
         color: #fff;
         border-color: #fff;
+    }
+
+    @media screen and (max-width: 420px) {
+        ul {
+            width: 95%;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+    }
+
+    @media screen and (min-width: 420px) {
+        .mobile-nav {
+            display: none;
+        }
     }
 </style>

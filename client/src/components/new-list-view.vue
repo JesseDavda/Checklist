@@ -1,10 +1,12 @@
 <template>
     <div class="new-list-view-container">
-        <i class="fal fa-angle-left" @click="back"/>
-        <h2 v-if="!nameEditMode" @click="editName" >{{ checklistTemplate.name }}</h2>
-        <div v-if="nameEditMode" class="input-container">
-            <input class="name-input" type="text" v-model="checklistTemplate.name" />
-            <i class="fal fa-check-circle" @click="editName" />
+        <div class="name-container">
+            <i class="fal fa-angle-left" @click="back"/>
+            <h2 v-if="!nameEditMode" @click="editName" >{{ checklistTemplate.name }}</h2>
+            <div v-if="nameEditMode" class="input-container">
+                <input class="name-input" type="text" v-model="checklistTemplate.name" />
+                <i class="fal fa-check-circle" @click="editName" />
+            </div>
         </div>
         <div class="item-list" v-if="checklistTemplate.checklistItems.length > 0">
             <ul>
@@ -34,6 +36,7 @@
             "fullChecklist"
         ],
         mounted() {
+            console.log(11);
             if(_.isEmpty(this.fullChecklist)) {
                 this.checklistTemplate.id = this.$store.getters.getCurrentLoggedInUserId;
                 this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
@@ -45,13 +48,16 @@
         },
         methods: {
             back: function() {
+                console.log(12);
                 this.$emit('backFromNewList');
             },
             editName: function() {
+                console.log(13);
                 this.nameEditMode = !this.nameEditMode;
                 this.saveChecklist();
             },
             addTask: function() {
+                console.log(14);
                 let newTaskObject = {
                     completed: false,
                     name: this.newTaskName,
@@ -65,11 +71,13 @@
                 this.saveChecklist();
             },
             deleteTask: function(index) {
+                console.log(15);
                 this.checklistTemplate.checklistItems.splice(index, 1);
 
                 this.saveChecklist();
             },
             saveChecklist: function() {
+                console.log(16);
                 this.checklistTemplate.userId = this.currentUserId;
                 if(this.firstTimeSave) { 
                     axios.post('http://localhost:3000/createNewChecklist', this.checklistTemplate)
@@ -116,17 +124,21 @@
     }
 
     .fa-angle-left {
-        position: absolute;
         zoom: 3;
-        top: 10px;
 
         &:hover {
             cursor: pointer;
         }
     }
 
+    .name-container {
+        width: 100%;
+        padding-top:10px;
+        display: flex;
+    }
+
     .input-container {
-        margin-left: 40px;
+        margin-left: 20px;
     }
 
     .new-list-view-container {
@@ -139,8 +151,9 @@
             font-weight: 500;
             font-size: 35px;
             color: #1a1a1d;
+            margin-top: 3px;
             margin-bottom: 40px;
-            margin-left: 40px;
+            margin-left: 20px;
         }
     }
 
@@ -239,6 +252,27 @@
                 cursor: pointer;
                 color: red;
             }
+        }
+    }
+
+    @media screen and (max-width: 420px) {
+        .name-container {
+            padding-left: 20px;
+            padding-top: 25px;
+        }
+
+        .item-addition {
+            width: 94%;
+            margin: 0 auto;
+
+            input {
+                width: 60%;
+            }
+        }
+
+        .checklist-item {
+            width: 94%;
+            margin: 0 auto;
         }
     }
 
