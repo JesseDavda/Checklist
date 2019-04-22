@@ -13,7 +13,7 @@
                 </div>
             </li>
         </ul>
-        <MobileNav class="mobile-nav" @mobileNavResetChecklist="resetChecklistFunction" @mobileNavHome="back"/>
+        <MobileNav class="mobile-nav" @mobileNavResetChecklist="resetChecklistFunction" @mobileNavHome="back" @editChecklist="sendEditSignal"/>
     </div>
 </template>
 
@@ -34,6 +34,7 @@
             this.checklist = this.$store.getters.getSingleChecklist(this.checklistId);
             this.checklistItems = this.checklist.checklistItems;
             this.$emit('currentChecklist', this.checklist);
+            this.$store.commit('setCurrentChecklist', this.checklist)
         },
         methods: {
             saveAndUpdateChecklist: function(value, position) {
@@ -56,11 +57,14 @@
                 });
 
                 this.saveChecklist();
+            },
+            sendEditSignal: function() {
+                console.log('sending signal')
+                this.$emit('editSignal');
             }
         },
         watch: {
             resetChecklist: function() {
-                console.log('recieved propchange')
                 this.resetChecklistFunction();
             }
         },

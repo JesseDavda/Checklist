@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentLoggedInUser: "",
+    currentChecklist: {},
     checklists: []
   },
   mutations: {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     setCurrentUser: function(state, id) {
       state.currentLoggedInUser = id;
+    },
+    setCurrentChecklist: function(state, list) {
+      state.currentChecklist = list;
     }
   },
   getters: {
@@ -27,6 +31,9 @@ export default new Vuex.Store({
       return state.checklists.find(checklist => {
         return checklist._id === checklistId;
       });
+    },
+    getCurrentChecklist: function(state) {
+      return state.currentChecklist
     }
   }
 })

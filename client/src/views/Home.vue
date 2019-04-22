@@ -10,7 +10,7 @@
             <SideMenu class="sideMenu" :checklistView="expandSideMenu" @createNewChecklist="newChecklist" @resetChecklist="resetChecklist"></SideMenu>
             <div class="checklist-views-container" >
                 <ListView class="mainView" v-if="viewType === 'list'" @checklistSelected="showChecklist" @editList="editList" @newChecklist="newChecklist"/>
-                <CheckListView class="mainView" v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list', expandSideMenu = false" :resetChecklist="resetChecklistSignal"/>
+                <CheckListView class="mainView" v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list', expandSideMenu = false" :resetChecklist="resetChecklistSignal" @editSignal="editList()"/>
                 <NewListView class="mainView" v-if="viewType === 'newList'" :fullChecklist="this.editChecklist" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
             </div>
         </div>
@@ -60,9 +60,17 @@
                 this.expandSideMenu = true;
             },
             editList: function(checklist) {
-                this.editChecklist = checklist;
-                this.viewType = 'newList';
-                this.expandSideMenu = true;
+                if(checklist) {
+                    this.editChecklist = checklist;
+                    this.viewType = 'newList';
+                    this.expandSideMenu = true;
+                } else {
+                    console.log('checklist wasnt defined')
+                    let checklist = this.$store.getters.getCurrentChecklist;
+
+                    this.editChecklist = checklist;
+                    this.viewType = 'newList';
+                }
             },
             resetChecklist: function() {
                 this.resetChecklistSignal = !this.resetChecklistSignal;

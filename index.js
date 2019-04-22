@@ -24,7 +24,7 @@ app.get('/checklists', (req, res) => {
     res.redirect('/');
 })
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log('Checklist server now listening on port: ', port);
 });
