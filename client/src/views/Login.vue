@@ -67,7 +67,7 @@
             password: this.password
         }
 
-        axios.post('http://localhost:3000/login', loginData)
+        axios.post('http://192.168.1.5:3000/login', loginData)
           .then(response => {
             console.log(response);
             if(response.data.completed) {
@@ -99,7 +99,7 @@
 
         console.log(data);
 
-        axios.post('http://localhost:3000/signup', data)
+        axios.post('http://192.168.1.5:3000/signup', data)
           .then(response => {
             console.log(response);
           }).catch(e => {
@@ -350,5 +350,30 @@
 
   #terms {
     text-align: center;
+  }
+
+  @media screen and (max-width: 420px) {
+    .modal-left {
+      display: none;
+    }
+
+    .modal-right {
+      width: 100%;
+      padding-top: 5px;
+
+      h2 {
+        margin-top: 0;
+      }
+    }
+
+    .login-form {
+      width: 100%;
+    }
+
+    .login-modal-container {
+      width: 90%;
+      height: 480px;
+      margin: 0 auto;
+    }
   }
 </style>

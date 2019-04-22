@@ -13,7 +13,7 @@
                 </div>
             </li>
         </ul>
-        <MobileNav class="mobile-nav" @resetChecklist="resetChecklistFunction" />
+        <MobileNav class="mobile-nav" @mobileNavResetChecklist="resetChecklistFunction" @mobileNavHome="back"/>
     </div>
 </template>
 
@@ -42,7 +42,7 @@
                 this.saveChecklist();
             },
             saveChecklist: function() {
-                axios.post('http://localhost:3000/saveChecklist', {checklist: this.checklist})
+                axios.post('http://192.168.1.5:3000/saveChecklist', {checklist: this.checklist})
                     .catch(e => {
                         console.log(e);
                     })
@@ -56,7 +56,7 @@
                 });
 
                 this.saveChecklist();
-            },
+            }
         },
         watch: {
             resetChecklist: function() {

@@ -1,16 +1,16 @@
 <template>
     <div class="nav-menu-container">
-        <div class="nav-menu-item left" >
+        <div class="nav-menu-item left" @click="goHome">
+            <i class="fas fa-dice-d20" />
+        </div>
+        <div class="nav-menu-item " >
             <i class="fal fa-calendar-alt" />
         </div>
         <div class="nav-menu-item" @click="resetChecklist">
             <i class="fal fa-redo-alt reset" />
         </div>
-        <div class="nav-menu-item">
-            <i class="fal fa-share-alt" />
-        </div>
         <div class="nav-menu-item right">
-            <i class="fal fa-trash" />
+            <i class="fal fa-share-alt" />
         </div>
     </div>
 </template>
@@ -20,8 +20,10 @@ export default {
     name: "MobileNav",
     methods: {
         resetChecklist: function() {
-            console.log('no Problems here');
-            this.$emit('resetChecklist');
+            this.$emit('mobileNavResetChecklist');
+        },
+        goHome: function() {
+            this.$emit('mobileNavHome');
         }
     }
 }
@@ -42,12 +44,11 @@ export default {
 
     .left {
         border-bottom-left-radius: 5px;
-        border-left: none;
+        border-left: none !important;
     }
 
     .right {
         border-bottom-right-radius: 5px;
-        border-left: none;
     }
 
     .nav-menu-item {
