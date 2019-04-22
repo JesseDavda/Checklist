@@ -24,6 +24,7 @@ module.exports = app => {
             res.status(200).json({completed: true, userAccountId: userDataBody._id});
         } catch {
             console.log(e);
+            res.status(500).json({completed: false, message: "Something went wrong with creating your account"});
         }
     });
 }
