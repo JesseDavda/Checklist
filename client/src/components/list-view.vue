@@ -64,7 +64,7 @@ export default {
         deleteChecklist: function(id, checklist) {
             let postObj = {id: id};
 
-            axios.post('http://192.168.1.5:3000/deleteChecklist', postObj)
+            axios.post('/deleteChecklist', postObj)
                 .then(() => {
                     let position = this.checklist.indexOf(checklist);
                     this.checklist.splice(position, 1);
@@ -76,7 +76,7 @@ export default {
         getChecklists: function() {
             let userId = this.$store.getters.getCurrentLoggedInUserId;
 
-            axios.post('http://192.168.1.5:3000/getChecklists', {id: userId})
+            axios.post('/getChecklists', {id: userId})
                 .then(response => {
                     this.$store.commit('insertChecklists', response.data.checklist);
                     this.checklists = response.data.checklist;

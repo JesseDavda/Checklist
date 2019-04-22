@@ -42,7 +42,7 @@
                 this.saveChecklist();
             },
             saveChecklist: function() {
-                axios.post('http://192.168.1.5:3000/saveChecklist', {checklist: this.checklist})
+                axios.post('/saveChecklist', {checklist: this.checklist})
                     .catch(e => {
                         console.log(e);
                     })

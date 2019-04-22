@@ -67,7 +67,7 @@
             password: this.password
         }
 
-        axios.post('http://192.168.1.5:3000/login', loginData)
+        axios.post('/login', loginData)
           .then(response => {
             console.log(response);
             if(response.data.completed) {
@@ -99,7 +99,7 @@
 
         console.log(data);
 
-        axios.post('http://192.168.1.5:3000/signup', data)
+        axios.post('/signup', data)
           .then(response => {
             console.log(response);
           }).catch(e => {
