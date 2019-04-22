@@ -64,7 +64,7 @@ export default {
         deleteChecklist: function(id, checklist) {
             let postObj = {id: id};
 
-            axios.post('https://routine-server.herokuapp.com/deleteChecklist', postObj)
+            axios.post('/deleteChecklist', postObj)
                 .then(() => {
                     let position = this.checklist.indexOf(checklist);
                     this.checklist.splice(position, 1);
@@ -76,7 +76,7 @@ export default {
         getChecklists: function() {
             let userId = this.$store.getters.getCurrentLoggedInUserId;
 
-            axios.post('https://routine-server.herokuapp.com/getChecklists', {id: userId})
+            axios.post('/getChecklists', {id: userId})
                 .then(response => {
                     this.$store.commit('insertChecklists', response.data.checklist);
                     this.checklists = response.data.checklist;

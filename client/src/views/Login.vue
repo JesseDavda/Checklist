@@ -37,6 +37,11 @@
   import axios from 'axios';
   import moment from 'moment';
 
+  axios.interceptors.request.use(request => {
+    console.log('Starting Request', request)
+    return request
+  });
+
   export default {
     name: 'Login',
     beforeCreate: function() {
@@ -67,18 +72,14 @@
             password: this.password
         }
 
-        axios.post('https://routine-server.herokuapp.com/login', loginData)
+        axios.post('/login', loginData)
           .then(response => {
             console.log(response);
             if(response.data.completed) {
-              console.log('creating the current user')
               this.$store.commit('setCurrentUser', response.data.accountId);
-              console.log('starting the session');
               this.$session.start();
-              console.log('setting session details');
               this.$session.set("ID", response.data.accountId);
               this.$session.set("startTime", moment());
-              console.log('pushing to checklists');
               this.$router.push('checklists');
             } else {
               this.loginDeclined = true;
@@ -97,9 +98,7 @@
           lastName: this.lastName
         }
 
-        console.log(data);
-
-        axios.post('https://routine-server.herokuapp.com/signup', data)
+        axios.post('/signup', data)
           .then(response => {
             console.log(response);
           }).catch(e => {
@@ -112,10 +111,8 @@
         let testRegEx = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}/i;
 
         if(testRegEx.test(value)) {
-          console.log('passed');
           this.emailValid = true;
         } else {
-          console.log('failed')
           this.emailValid = false;
         }
 

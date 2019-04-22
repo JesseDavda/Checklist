@@ -42,7 +42,7 @@
                 this.saveChecklist();
             },
             saveChecklist: function() {
-                axios.post('https://routine-server.herokuapp.com/saveChecklist', {checklist: this.checklist})
+                axios.post('/saveChecklist', {checklist: this.checklist})
                     .catch(e => {
                         console.log(e);
                     })

@@ -80,7 +80,7 @@
                 console.log(16);
                 this.checklistTemplate.userId = this.currentUserId;
                 if(this.firstTimeSave) { 
-                    axios.post('https://routine-server.herokuapp.com/createNewChecklist', this.checklistTemplate)
+                    axios.post('/createNewChecklist', this.checklistTemplate)
                         .then((response) => {
                             this.checklistTemplate._id = response.data.id;
                         }).catch(e => {
@@ -90,7 +90,7 @@
                     this.firstTimeSave = false;
                 } else {
                     console.log(this.checklistTemplate);
-                    axios.post('https://routine-server.herokuapp.com/saveChecklist', {checklist: this.checklistTemplate})
+                    axios.post('/saveChecklist', {checklist: this.checklistTemplate})
                         .catch(e => {
                             console.log(e);
                         })
