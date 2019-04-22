@@ -7,6 +7,9 @@
   "author": "JesseDavda <jessepilot@live.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
