@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-mongoose.connect('mongodb+srv://heroku:x8qDDGCssoOwBClk@checklistfirstcluster-xztk2.mongodb.net/test?retryWrites=true', { useNewUrlParser: true });
+mongoose.connect('mongodb+srv://heroku:x8qDDGCssoOwBClk@checklistfirstcluster-xztk2.mongodb.net/test?retryWrites=true', { useNewUrlParser: true }, err => {
+    console.log(err);
+});
 console.log('Connected to the mongo database');
 
 const checklistSchema = new Schema({
