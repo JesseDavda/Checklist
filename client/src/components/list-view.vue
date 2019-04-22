@@ -142,6 +142,7 @@ export default {
 
         i {
             zoom: 12;
+            -moz-transform: scale(12);
             color: rgba(0, 0, 0, 0.2);
         }
 
@@ -190,6 +191,7 @@ export default {
 
         i {
             zoom: 1.4;
+            -moz-transform: scale(1.4);
         }
 
         .iconTwo {
@@ -252,6 +254,7 @@ export default {
 
         i {
             zoom: 1.5;
+            -moz-transform: scale(1.5);
         }
     }
 
@@ -349,6 +352,7 @@ export default {
             z-index: 1000;
             top: 0;
             zoom: 0.7;
+            -moz-transform: scale(0.7);
             right: 15px;
             color: #ecf0f1;
         }

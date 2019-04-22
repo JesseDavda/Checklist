@@ -65,10 +65,12 @@ export default {
 
         i {
             zoom: 2;
+            -moz-transform: scale(2);
         }
     }
 
     .reset {
         zoom: 1.8 !important;
+        -moz-transform: scale(1.8) !important;
     }
 </style>

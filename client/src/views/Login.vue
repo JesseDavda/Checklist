@@ -174,6 +174,7 @@
 
     i {
       zoom: 7;
+      -moz-transform: scale(7);
       color: #fff;
     }
   }
@@ -287,6 +288,7 @@
       position: absolute;
       left: 5px;
       zoom: 2.3;
+      -moz-transform: scale(2.3);
       color: #fff;
     }
 

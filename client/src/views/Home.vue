@@ -117,6 +117,7 @@
 
         i {
             zoom: 2.3;
+            -moz-transform: scale(2.3);
             margin-right: 5px;
             color: rgba(195,7,63,1);
         }

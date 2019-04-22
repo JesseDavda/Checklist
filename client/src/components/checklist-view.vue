@@ -84,6 +84,7 @@
 
     .fa-angle-left {
         zoom: 3;
+        -moz-transform: scale(3);
         top: 10px;
 
         &:hover {
@@ -140,6 +141,7 @@
 
         i {
             zoom: 1.8;
+            -moz-tranform: scale(1.8);
             position: absolute;
             left: 5px; 
 

@@ -118,6 +118,7 @@
 
     .fa-angle-left {
         zoom: 3;
+        -moz-transform: scale(3);
 
         &:hover {
             cursor: pointer;
@@ -159,6 +160,7 @@
         i {
             margin-left: 10px;
             zoom: 1.5;
+            -moz-transform: scale(1.5);
 
             &:hover {
                 cursor: pointer;
@@ -194,6 +196,7 @@
             position: absolute;
             left: 10px;    
             zoom: 1.5;
+            -moz-transform: scale(1.5);
         }
 
         input {
@@ -225,6 +228,7 @@
             position: absolute;
             left: 10px;
             zoom: 1.6;
+            -moz-transform: scale(1.6);
         }
 
         h3 {
@@ -240,6 +244,7 @@
             position: absolute;
             right: 10px;
             zoom: 1.5;
+            -moz-transform: scale(1.5);
             
             &:hover {
                 cursor: pointer;

@@ -79,6 +79,7 @@ export default {
         i {
             color: #1A1A1D;
             zoom: 1.4;
+            -moz-transform: scale(1.4);
         }
 
         &:hover {
