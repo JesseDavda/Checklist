@@ -17,6 +17,9 @@
                 <div class="sk-cube sk-cube9"></div>
             </div>
             <p>Fetching your checklists...</p>
+            <div class="mobile-content new-list-button" @click="createChecklist">
+                <p>Create New Checklist</p>
+            </div>
         </div>
         <div class="lists-container" v-if="found && !loading">
             <h2>My Checklists</h2>
