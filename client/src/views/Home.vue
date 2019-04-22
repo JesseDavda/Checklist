@@ -12,7 +12,7 @@
             <div class="checklist-views-container" >
                 <ListView class="mainView" v-if="viewType === 'list'" @checklistSelected="showChecklist" @editList="editList" @newChecklist="newChecklist"/>
                 <CheckListView class="mainView" v-if="viewType === 'checklist'" :checklistId="selectedChecklistId" @backFromChecklist="viewType = 'list', expandSideMenu = false" :resetChecklist="resetChecklistSignal" @editSignal="editList()"/>
-                <NewListView class="mainView" v-if="viewType === 'newList'" :fullChecklist="this.editChecklist" @backFromNewList="viewType = 'list', expandSideMenu = false"/>
+                <NewListView class="mainView" v-if="viewType === 'newList'" :fullChecklist="this.editChecklist" @backFromNewList="viewType = 'list', expandSideMenu = false, editChecklist = {}"/>
             </div>
         </div>
     </div>

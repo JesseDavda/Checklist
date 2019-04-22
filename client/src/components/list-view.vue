@@ -1,8 +1,8 @@
 <template>
     <div class="checklist-view-container">
         <div v-if="!found && !loading" class="not-found-container" >
-            <i class="fas fa-search" />
-            <h2>You don't seem to have any checklists</h2>
+            <i class="fas fa-search not-found-icon" />
+            <h2 class="not-found-text">You don't seem to have any checklists</h2>
             <div class="mobile-content new-list-button" @click="createChecklist">
                 <p>Create New Checklist</p>
             </div>
@@ -415,6 +415,7 @@ export default {
 
         .checklist-view-container, .lists-container {
             background-color: #1A1A1D;
+            border-radius: 0px;
         }
 
         .lists-container {
@@ -468,6 +469,11 @@ export default {
         .lists-container > h2 {
             margin-left: 10px;
             color: #fff;
+        }
+
+        .not-found-text, .not-found-icon {
+            color: #fff;
+            text-align: center;
         }
     }
 </style>
