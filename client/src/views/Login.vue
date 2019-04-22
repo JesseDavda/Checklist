@@ -96,7 +96,7 @@
         axios.post('/signup', data)
           .then(response => {
             if(response.data.completed) {
-              this.$store.commit('setCurrentUser', response.data.accountId);
+              this.$store.commit('setCurrentUser', response.data.userAccountId);
               this.$session.start();
               this.$session.set("ID", response.data.accountId);
               this.$session.set("startTime", moment());
