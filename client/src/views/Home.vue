@@ -34,7 +34,6 @@
             NewListView
         },
         beforeCreate: function() {
-            this.$session.destroy();
             if(this.$session.exists()) {
                 let time = moment.duration(moment().diff(this.$session.get('startTime')))
                 
