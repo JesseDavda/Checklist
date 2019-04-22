@@ -20,6 +20,10 @@ require('./routes/deleteChecklist.js')(app);
 require('./routes/newAccount.js')(app);
 require('./routes/loginAccount.js')(app);
 
+app.get('/checklists', (req, res) => {
+    res.redirect('/');
+})
+
 const port = process.env.PORT;
 app.listen(port, () => {
     console.log('Checklist server now listening on port: ', port);

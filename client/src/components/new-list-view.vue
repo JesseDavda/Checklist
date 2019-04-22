@@ -36,7 +36,6 @@
             "fullChecklist"
         ],
         mounted() {
-            console.log(11);
             if(_.isEmpty(this.fullChecklist)) {
                 this.checklistTemplate.id = this.$store.getters.getCurrentLoggedInUserId;
                 this.currentUserId = this.$store.getters.getCurrentLoggedInUserId;
@@ -48,16 +47,13 @@
         },
         methods: {
             back: function() {
-                console.log(12);
                 this.$emit('backFromNewList');
             },
             editName: function() {
-                console.log(13);
                 this.nameEditMode = !this.nameEditMode;
                 this.saveChecklist();
             },
             addTask: function() {
-                console.log(14);
                 let newTaskObject = {
                     completed: false,
                     name: this.newTaskName,
@@ -71,13 +67,11 @@
                 this.saveChecklist();
             },
             deleteTask: function(index) {
-                console.log(15);
                 this.checklistTemplate.checklistItems.splice(index, 1);
 
                 this.saveChecklist();
             },
             saveChecklist: function() {
-                console.log(16);
                 this.checklistTemplate.userId = this.currentUserId;
                 if(this.firstTimeSave) { 
                     axios.post('/createNewChecklist', this.checklistTemplate)
@@ -89,7 +83,6 @@
 
                     this.firstTimeSave = false;
                 } else {
-                    console.log(this.checklistTemplate);
                     axios.post('/saveChecklist', {checklist: this.checklistTemplate})
                         .catch(e => {
                             console.log(e);
