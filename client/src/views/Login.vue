@@ -67,7 +67,7 @@
             password: this.password
         }
 
-        axios.post('/login', loginData)
+        axios.post('https://routine-server.herokuapp.com/login', loginData)
           .then(response => {
             console.log(response);
             if(response.data.completed) {
@@ -99,7 +99,7 @@
 
         console.log(data);
 
-        axios.post('/signup', data)
+        axios.post('https://routine-server.herokuapp.com/signup', data)
           .then(response => {
             console.log(response);
           }).catch(e => {
