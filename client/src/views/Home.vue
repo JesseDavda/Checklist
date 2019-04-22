@@ -5,6 +5,7 @@
                 <i class="fas fa-dice-d20" />
                 <h1>checklist</h1>
             </div>
+            <i class="fal fa-sign-out logout" @click="logout"/>
         </div>
         <div class="checklist-container">
             <SideMenu class="sideMenu" :checklistView="expandSideMenu" @createNewChecklist="newChecklist" @resetChecklist="resetChecklist"></SideMenu>
@@ -74,6 +75,10 @@
             },
             resetChecklist: function() {
                 this.resetChecklistSignal = !this.resetChecklistSignal;
+            },
+            logout: function() {
+                this.$session.destroy();
+                this.$router.push('/');
             }
         },
         data() {
@@ -89,6 +94,17 @@
 </script>
 
 <style lang="scss" scoped>
+    .logout {
+        position: absolute;
+        right: 5%;
+        zoom: 1.8 !important;
+        -moz-transform: scale(1.8) !important;
+        
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .checklist-views-container {
         width: 960px;
         max-height: 1000px;

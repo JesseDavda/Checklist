@@ -37,11 +37,6 @@
   import axios from 'axios';
   import moment from 'moment';
 
-  axios.interceptors.request.use(request => {
-    console.log('Starting Request', request)
-    return request
-  });
-
   export default {
     name: 'Login',
     beforeCreate: function() {

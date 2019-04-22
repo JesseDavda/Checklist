@@ -7,8 +7,8 @@
         <ul>
             <li v-for="item in checklistItems" :key="checklistItems.indexOf(item)">
                 <div class="checklist-list-item" :class="{ green: item.completed }" @click="saveAndUpdateChecklist(!item.completed, checklistItems.indexOf(item))">
-                    <i v-if="!item.completed" @click="saveAndUpdateChecklist(!item.completed, checklistItems.indexOf(item))" class="fal fa-square" />
-                    <i v-if="item.completed" @click="saveAndUpdateChecklist(!item.completed, checklistItems.indexOf(item))" class="fal fa-check-square" />
+                    <i v-if="!item.completed" @click="saveAndUpdateChecklist(item.completed, checklistItems.indexOf(item))" class="fal fa-square" />
+                    <i v-if="item.completed" @click="saveAndUpdateChecklist(item.completed, checklistItems.indexOf(item))" class="fal fa-check-square" />
                     <h3 class="item-name">{{item.name}}</h3>
                 </div>
             </li>

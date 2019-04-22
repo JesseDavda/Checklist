@@ -22,7 +22,10 @@
             <p>Fetching your checklists...</p>
         </div>
         <div class="lists-container" v-if="found && !loading">
-            <h2>My Checklists</h2>
+            <div class="list-view-header">
+                <h2>My Checklists</h2>
+                <i class="fal fa-sign-out logout" @click="logout"/>
+            </div>
             <div class="search-bar">
                 <input type="text" placeholder="Search for a checklist" />
             </div>
@@ -100,12 +103,38 @@ export default {
         },
         createChecklist: function() {
             this.$emit('newChecklist');
+        },
+        logout: function() {
+            this.$session.destroy();
+            this.$router.push('/');
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+    .list-view-header {
+        width: 100%;
+        display: flex;
+        position: relative;
+        align-items: center;
+
+        h2 {
+            color: #fff;
+        }
+        
+        padding-left: 10px;
+    }
+
+    .logout {
+        position: absolute;
+        zoom: 1.5;
+        -moz-transform: scale(1.5);
+        right: 10px;
+        color: #fff;
+        display: none;
+    }
+
     .delete {
         display: none;  
     }
@@ -164,7 +193,7 @@ export default {
             font-family: 'Roboto';
             font-weight: 500;
             font-size: 35px;
-            color: #1a1a1d;
+            color: #fff;
         }
     }
 
@@ -346,6 +375,10 @@ export default {
     /* Media Queries */
 
     @media screen and (max-width: 420px) { 
+        .logout {
+            display: block;
+        }
+
         .delete {
             display: block;
             position: absolute;
