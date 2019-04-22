@@ -1,6 +1,8 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
+const serveStatic = require("serve-static");
+const path = require('path');
 
 const app = express();
 
@@ -8,8 +10,8 @@ const mongoose = require('./db.js');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(serveStatic(path.join(__dirname, 'dist')));
 app.use(cors());
-app.use(express.static('dist'))
 
 require('./routes/getChecklists.js')(app);
 require('./routes/newChecklist.js')(app);
