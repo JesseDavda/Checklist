@@ -14,7 +14,7 @@
               <p class="signup">If you don't have an account you can <a @click="signup">create one here</a>.</p>
             </div>
             <div class="breaker"></div>
-            <div class="facebook-button" @click="login">
+            <div class="facebook-button">
               <i class="fab fa-facebook" />
               <h3>Continue with facebook</h3>
             </div>
@@ -22,12 +22,14 @@
         <div v-if="!loginScreen" class="modal-right signup">
           <h2 class="getOnBoard">Get on board.</h2>
           <div id="breaker-signup"></div>
+          <p v-if="signupError" class="error-message">It seems that you have missed one or more fields, please make sure to fill in all fields</p> 
           <input type="text" placeholder="First name" v-model="firstName">
           <input type="text" placeholder="Second name" v-model="lastName">
           <input type="text" placeholder="Email" :class="{ greenBorder: emailValid }" v-model="emailSignup">
           <input type="password" placeholder="Password" v-model="passwordSignup">
           <p id="terms" class="signup">By creating account you agree to checklist's terms and conditions and privacy policy.</p>
           <div class="login-button" @click="signUpPost"><p>signup</p></div>
+          <p>Or alternatively, <a @click="goToLogin">Login</a>.</p>
         </div>
       </div>
     </div>
@@ -53,11 +55,11 @@
       }
     },
     methods: {
-      login: function() {
-        this.$router.push('checklists');
-      },
       signup: function() {
-        this.loginScreen = false
+        this.loginScreen = false;
+      },
+      goToLogin: function() {
+        this.loginScreen = true;
       },
       loginPost: function() {
         this.loading = true;
@@ -103,7 +105,7 @@
               this.$router.push('checklists');
             }
           }).catch(e => {
-            console.log(e);
+            this.signupError = true
           })
       }
     },
@@ -131,7 +133,8 @@
         lastName: "",
         emailValid: false,
         loginMessage: "",
-        loginDeclined: false
+        loginDeclined: false,
+        signupError: false
       }
     }
   }
@@ -208,7 +211,6 @@
 
   .signup {
     margin: 0;
-    margin-top: 10px;
     font-family: 'Roboto';
     font-weight: 300;
     font-size: 14px;
