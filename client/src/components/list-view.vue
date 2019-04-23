@@ -193,7 +193,7 @@ export default {
             font-family: 'Roboto';
             font-weight: 500;
             font-size: 35px;
-            color: #fff;
+            color: #1A1A1D;
         }
     }
 
@@ -474,6 +474,12 @@ export default {
         .not-found-text, .not-found-icon {
             color: #fff;
             text-align: center;
+        }
+
+        .list-view-header {
+            h2 {
+                color: #fff !important;
+            }
         }
     }
 </style>
