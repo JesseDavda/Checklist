@@ -98,7 +98,7 @@
             if(response.data.completed) {
               this.$store.commit('setCurrentUser', response.data.userAccountId);
               this.$session.start();
-              this.$session.set("ID", response.data.accountId);
+              this.$session.set("ID", response.data.userAccountId);
               this.$session.set("startTime", moment());
               this.$router.push('checklists');
             }
