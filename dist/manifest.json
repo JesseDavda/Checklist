@@ -1,6 +1,18 @@
 {
   "name": "Checklist",
   "short_name": "Checklist",
+  "icons": [
+    {
+      "src": "/img/icons/android-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/icons/android-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1d",
