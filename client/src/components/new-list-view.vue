@@ -20,7 +20,7 @@
             </ul>
         </div>
         <div class="item-addition">
-            <i class="fal fa-layer-plus" />
+            <i @click="addTask" class="fal fa-layer-plus" />
             <input v-on:keyup.enter="addTask" v-model="newTaskName" type="text" class="new-task-name" placeholder="Task name" />
         </div>
     </div>
