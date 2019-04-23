@@ -1,7 +1,7 @@
 {
-  "name": "client",
-  "short_name": "client",
-  "start_url": "./index.html",
+  "name": "Checklist",
+  "short_name": "Checklist",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1d",
   "theme_color": "#1a1a1d"
