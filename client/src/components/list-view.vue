@@ -27,11 +27,31 @@
                 <i class="fal fa-sign-out logout" @click="logout"/>
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Search for a checklist" />
+                <input type="text" placeholder="Search for a checklist" v-model="searchTerm" />
             </div>
-            <ul class="checklists-container">
+            <ul v-if="searchTerm === ''" class="checklists-container desktop-block">
                 <li v-for="checklist in checklists" :key="checklist._id"> 
-                    <div class="checklist" :style="{backgroundColor: checklist.colour}" @click="selectChecklist(checklist)">
+                    <div class="checklist mobile" :style="{backgroundColor: checklist.colour}" @click="selectChecklist(checklist)">
+                        <i class="fal fa-list iconOne" />
+                        <h3 class="checklist-name">{{ checklist.name }}</h3>
+                        <div @click="editChecklist(checklist)" class="editIcon"><i class="fal fa-pen-square" /></div>
+                        <div @click="deleteChecklist(checklist._id, checklist)" class="deleteIcon"><i class="fal fa-minus-octagon"/></div>
+                        <div @click="selectChecklist(checklist)"  class="iconTwo"><i class="fal fa-chevron-circle-right" /></div>
+                        <div @click="deleteChecklist(checklist)" class="delete"><i class="fal fa-window-minimize" /></div>
+                    </div>
+                    <div class="checklist desktop" @click="selectChecklist(checklist)">
+                        <i class="fal fa-list iconOne" />
+                        <h3 class="checklist-name">{{ checklist.name }}</h3>
+                        <div @click="editChecklist(checklist)" class="editIcon"><i class="fal fa-pen-square" /></div>
+                        <div @click="deleteChecklist(checklist._id, checklist)" class="deleteIcon"><i class="fal fa-minus-octagon"/></div>
+                        <div @click="selectChecklist(checklist)"  class="iconTwo"><i class="fal fa-chevron-circle-right" /></div>
+                        <div @click="deleteChecklist(checklist)" class="delete"><i class="fal fa-window-minimize" /></div>
+                    </div>
+                </li>
+            </ul>
+            <ul v-if="searchTerm.length" class="checklists-container mobile">
+                <li v-for="checklist in searchChecklists" :key="checklist._id"> 
+                    <div class="checklist mobile" :style="{backgroundColor: checklist.colour}" @click="selectChecklist(checklist)">
                         <i class="fal fa-list iconOne" />
                         <h3 class="checklist-name">{{ checklist.name }}</h3>
                         <div @click="editChecklist(checklist)" class="editIcon"><i class="fal fa-pen-square" /></div>
@@ -60,7 +80,9 @@ export default {
         return {
             found: false,
             checklists: {},
-            loading: true
+            searchChecklists: {},
+            loading: true,
+            searchTerm: ""
         }
     },
     methods: {
@@ -86,6 +108,7 @@ export default {
                 .then(response => {
                     this.$store.commit('insertChecklists', response.data.checklist);
                     this.checklists = response.data.checklist;
+                    this.searchChecklists = response.data.checklist;
                 }).then(() => {
                     if(this.checklists.length === 0) {
                         this.found = false;
@@ -107,6 +130,17 @@ export default {
         logout: function() {
             this.$session.destroy();
             this.$router.push('/');
+        },
+        searchFunction: function() {
+            this.searchChecklists = this.checklists;
+            this.searchChecklists = this.searchChecklists.filter(list => {
+               return list.name.substring(0, this.searchTerm.length).toLowerCase() == this.searchTerm.toLowerCase(); 
+            });
+        }
+    },
+    watch: {
+        searchTerm: function() {
+            this.searchFunction();
         }
     }
 }
@@ -374,7 +408,31 @@ export default {
 
     /* Media Queries */
 
+    .mobile {
+        display: none;
+    }
+
+    .desktop {
+        display: flex;
+    }
+
+    .desktop-block {
+        display: block;
+    }
+
     @media screen and (max-width: 420px) { 
+        .mobile {
+            display: flex;
+        }
+
+        .desktop {
+            display: none;
+        }
+
+        .desktop-block {
+            display: none;
+        }
+
         .logout {
             display: block;
         }

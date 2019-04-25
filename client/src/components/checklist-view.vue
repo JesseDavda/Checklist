@@ -78,6 +78,7 @@
 </script>
 
 <style lang="scss" scoped>
+
     li {
         list-style-type: none;
     }
@@ -126,7 +127,7 @@
 
     .checklist-list-item {
         width: 100%;
-        height: 40px;
+        height: fit-content;
         margin: 0 auto;
         display: flex;
         align-items: center;
@@ -135,12 +136,15 @@
         background-color: #fff;
         background-position: left bottom;
         transition: all 0.5s ease-out;
+        padding: 5px 0;
 
         h3 {
             margin: 0;
             font-family: 'Roboto';
             font-size: 20px;
+            font-weight: 300;
             margin-left: 50px;
+            width: 90%;
         }
 
         i {
@@ -168,6 +172,7 @@
     }
 
     @media screen and (max-width: 420px) {
+
         ul {
             width: 95%;
             margin: 0 auto;

@@ -19,6 +19,7 @@ require('./routes/saveSingleChecklist.js')(app);
 require('./routes/deleteChecklist.js')(app);
 require('./routes/newAccount.js')(app);
 require('./routes/loginAccount.js')(app);
+require('./lib/jobSchedule.js')(app);
 
 app.get('/checklists', (req, res) => {
     res.redirect('/');

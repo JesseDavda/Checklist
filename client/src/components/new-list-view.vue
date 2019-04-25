@@ -218,11 +218,12 @@
 
     .checklist-item {
         width: 100%;
-        height: 40px;
+        height: fit-content;
         display: flex;
         align-items: center;
         border-top: 1px solid #eee;
         position: relative;
+        padding: 5px 0;
 
         .item-icon-one {
             position: absolute;
@@ -232,12 +233,13 @@
         }
 
         h3 {
-            position: absolute;
-            left: 60px;
+            position: relative;
             margin: 0;
+            margin-left: 60px;
             font-family: 'Roboto';
             font-weight: 300;
             font-size: 16px;
+            width: 85%;
         }
 
         .item-icon-two {
