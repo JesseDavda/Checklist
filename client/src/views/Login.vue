@@ -14,7 +14,7 @@
               <p class="signup">If you don't have an account you can <a @click="signup">create one here</a>.</p>
             </div>
             <div class="breaker"></div>
-            <div class="facebook-button">
+            <div class="facebook-button" @click="fbLogin">
               <i class="fab fa-facebook" />
               <h3>Continue with facebook</h3>
             </div>
@@ -54,7 +54,18 @@
         }
       }
     },
+    mounted: async function() {
+      const initSDK = await this.initFBSdk();
+    },
     methods: {
+      fbLogin: function() {
+        const scope = ["public_profile", "email"];
+
+
+        window.FB.login(response => {
+          this.getUserData();
+        }, scope);
+      },
       signup: function() {
         this.loginScreen = false;
       },
@@ -87,7 +98,6 @@
           })
       },
       signUpPost: function() {
-
         let data = {
           email: this.emailSignup,
           password: this.passwordSignup,
@@ -95,7 +105,10 @@
           lastName: this.lastName
         }
 
-        axios.post('/signup', data)
+        this.sendSignupRequest("/signup" ,data);
+      },
+      sendSignupRequest: function(route, object) {
+         axios.post(route, object)
           .then(response => {
             if(response.data.completed) {
               this.$store.commit('setCurrentUser', response.data.userAccountId);
@@ -107,6 +120,41 @@
           }).catch(e => {
             this.signupError = true
           })
+      },
+      getUserData: function() {
+          const fbSignupObject = {}
+
+          FB.api("/me?fields=id,name,first_name,last_name,email", response => {
+              fbSignupObject.email = response.email;
+              fbSignupObject.firstName = response.first_name;
+              fbSignupObject.lastName = response.last_name;
+              fbSignupObject.fbId = response.id; 
+
+              this.sendSignupRequest("/fb" ,fbSignupObject);
+          });
+      },
+      initFBSdk: function() {
+        return new Promise(resolve => {
+            window.fbAsyncInit = function () {
+              const options = { 
+                  appId: '354622065174152',
+                  cookie: true, 
+                  xfbml: true,
+                  version: 'v3.2' 
+              }
+              
+              window.FB.init(options)
+                resolve()
+              };
+              
+              (function(d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0];
+                  if (d.getElementById(id)) return;
+                  js = d.createElement(s); js.id = id;
+                  js.src = "https://connect.facebook.net/en_US/sdk.js";
+                  fjs.parentNode.insertBefore(js, fjs);
+              }(document, 'script', 'facebook-jssdk'));
+        })
       }
     },
     watch: {
@@ -214,6 +262,7 @@
     font-family: 'Roboto';
     font-weight: 300;
     font-size: 14px;
+    margin-top: 20px;
 
     a {
       text-decoration: underline;

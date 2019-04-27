@@ -17,7 +17,6 @@ module.exports = (app) => {
             newChecklist.save()
             .then(savedChecklist => {
                 resolve(savedChecklist);
-                console.log(savedChecklist)
             }).catch(e => {
                 reject(e);
             })
