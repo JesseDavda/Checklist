@@ -23,8 +23,9 @@
         </div>
         <div class="lists-container" v-if="found && !loading">
             <div class="list-view-header">
-                <h2>My Checklists</h2>
-                <i class="fal fa-sign-out logout" @click="logout"/>
+                <i class="fal fa-bars menu-icon" @click="slideMenu" />
+                <h2 class="my_lists">My Checklists</h2>
+                <!-- <i class="fal fa-sign-out logout" @click="logout"/> -->
             </div>
             <div class="search-bar">
                 <input type="text" placeholder="Search for a checklist" v-model="searchTerm" />
@@ -69,10 +70,14 @@
 </template>
 
 <script>
+import MobileSlideOut from './mobile-slide-out.vue';
 import axios from 'axios';
 
 export default {
     name: "ListView",
+    components: {
+        MobileSlideOut
+    },
     mounted() {
         this.getChecklists();
     },
@@ -82,7 +87,8 @@ export default {
             checklists: {},
             searchChecklists: {},
             loading: true,
-            searchTerm: ""
+            searchTerm: "",
+            slide: false
         }
     },
     methods: {
@@ -136,6 +142,9 @@ export default {
             this.searchChecklists = this.searchChecklists.filter(list => {
                return list.name.substring(0, this.searchTerm.length).toLowerCase() == this.searchTerm.toLowerCase(); 
             });
+        },
+        slideMenu: function() {
+            this.$emit('slideOutMenu');
         }
     },
     watch: {
@@ -147,14 +156,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .menu-icon {
+        display: none;
+    }
+
     .list-view-header {
         width: 100%;
         display: flex;
         position: relative;
         align-items: center;
-
+        
         h2 {
             color: #fff;
+            margin-left: 10px;
         }
         
         padding-left: 10px;
@@ -421,6 +435,16 @@ export default {
     }
 
     @media screen and (max-width: 420px) { 
+        .menu-icon {
+            display: block;
+            color: #fff;
+            zoom: 2;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
         .mobile {
             display: flex;
         }
@@ -508,6 +532,7 @@ export default {
             border-bottom: 0;
             position: relative;
             margin-top: 10px;
+            z-index: 1;
 
             .checklist-name {
                 position: absolute;
@@ -537,6 +562,7 @@ export default {
         .list-view-header {
             h2 {
                 color: #fff !important;
+                margin-left: 10px;
             }
         }
     }

@@ -1,44 +1,78 @@
 <template>
     <div class="checklist-view-container">
+        <SharingModal v-if="shared" :listId="shareListId" @closeShareModal="shared = false" />
         <div class="checklist-title-container">
             <i @click="back" class="fal fa-angle-left" />
-            <h2>{{checklist.name}}</h2>
+            <h2 >{{checklist.name}}</h2>
         </div>
-        <ul>
-            <li v-for="item in checklistItems" :key="checklistItems.indexOf(item)">
-                <div class="checklist-list-item" :class="{ green: item.completed }" @click="saveAndUpdateChecklist(!item.completed, checklistItems.indexOf(item))">
-                    <i v-if="!item.completed" @click="saveAndUpdateChecklist(item.completed, checklistItems.indexOf(item))" class="fal fa-square" />
-                    <i v-if="item.completed" @click="saveAndUpdateChecklist(item.completed, checklistItems.indexOf(item))" class="fal fa-check-square" />
+        <div class="header">
+            <p>Need To Do</p>
+            <div class="line-break" />
+        </div>
+        <ul class="uncompleted">
+             <li v-for="item in uncompleted" :key="checklist.checklistItems.indexOf(item)">
+                <div class="checklist-list-item" @click="moveItem(item, uncompleted.indexOf(item), true)">
+                    <i @click="moveItem(item, uncompleted.indexOf(item), true)" class="fal fa-square" />
                     <h3 class="item-name">{{item.name}}</h3>
                 </div>
             </li>
         </ul>
-        <MobileNav class="mobile-nav" @mobileNavResetChecklist="resetChecklistFunction" @mobileNavHome="back" @editChecklist="sendEditSignal"/>
+        <div class="header">
+            <p>Completed</p>
+            <div class="line-break" />
+        </div>
+        <ul class="completed">
+            <li v-for="item in completed" :key="checklist.checklistItems.indexOf(item)">
+                <div class="checklist-list-item green" @click="moveItem(item, completed.indexOf(item), false)">
+                    <i @click="moveItem(item, completed.indexOf(item), false)" class="fal fa-check-square" />
+                    <h3 class="item-name">{{item.name}}</h3>
+                </div>
+            </li>
+        </ul>
+        <MobileNav class="mobile-nav" @mobileNavResetChecklist="resetChecklistFunction" @mobileNavHome="back" @editChecklist="sendEditSignal" @shareChecklist="openSharingModal"/>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
     import MobileNav from '../components/bottom-mobile-menu.vue';
+    import SharingModal from '../components/sharing-modal.vue';
 
     export default {
         name: "CheckListView",
         components: {
-            MobileNav
+            MobileNav,
+            SharingModal
         },
         props: [
             "checklistId",
-            "resetChecklist"
+            "resetChecklist",
+            "shareList"
         ],
         mounted() {
             this.checklist = this.$store.getters.getSingleChecklist(this.checklistId);
-            this.checklistItems = this.checklist.checklistItems;
+            this.splitList();
             this.$emit('currentChecklist', this.checklist);
             this.$store.commit('setCurrentChecklist', this.checklist)
         },
         methods: {
-            saveAndUpdateChecklist: function(value, position) {
-                this.checklist.checklistItems[position].completed = value;
+            openSharingModal: function() {
+                this.shared = true;
+                this.shareListId = this.checklist._id;
+            },
+            moveItem: function(item, position, section) {
+                const positionInChecklist = this.checklist.checklistItems.indexOf(item);
+                this.checklist.checklistItems[positionInChecklist].completed = section;
+
+                if(section) {
+                    let item = this.uncompleted[position];
+                    this.uncompleted.splice(position, 1);
+                    this.completed.push(item);
+                } else {
+                    let item = this.completed[position];
+                    this.completed.splice(position, 1);
+                    this.uncompleted.push(item);
+                }
 
                 this.saveChecklist();
             },
@@ -59,25 +93,48 @@
                 this.saveChecklist();
             },
             sendEditSignal: function() {
-                console.log('sending signal')
                 this.$emit('editSignal');
+            },
+            splitList: function() {
+                this.checklist.checklistItems.forEach(item => {
+                    if(item.completed) {
+                        this.completed.push(item);
+                    } else if(!item.completed) {
+                        this.uncompleted.push(item);
+                    }
+                });
+
+                console.log("Completed array: ", this.completed);
+                console.log("To do array: ", this.uncompleted);
             }
         },
         watch: {
             resetChecklist: function() {
                 this.resetChecklistFunction();
+            },
+            shareList: function(value) {
+                if(value === true) {
+                    this.openSharingModal();
+                }
             }
         },
         data() {
             return {
+                completed: [],
+                uncompleted: [],
                 checklist: {},
-                checklistItems: []
+                shared: false,
+                shareListId: ""
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+
+    .uncompleted, .completed {
+        max-height: 70%;
+    }
 
     li {
         list-style-type: none;
@@ -171,12 +228,34 @@
         border-color: #fff;
     }
 
+    .header {
+        display: none;
+    }
+
     @media screen and (max-width: 420px) {
+        .header {
+            display: block;
+            width: 95%;
+            margin: 20px auto;
+
+            p {
+                margin: 0;
+                font-family: 'Roboto';
+                font-size: 14px;
+                font-weight: 300;
+            }
+
+            .line-break {
+                width: 100%;
+                height: 1px;
+                margin-top: 5px;
+                background-color: #eee;
+            }
+        }
 
         ul {
             width: 95%;
             margin: 0 auto;
-            margin-top: 10px;
         }
     }
 

@@ -1,24 +1,30 @@
 <template>
     <div v-bind:class="{ extraHeight: checklistView }" class="side-menu-container">
-        <div v-if="!checklistView" @click="newChecklist()" class="menu-action-container">
+        <div v-if="!checklistView" @click="newChecklist" class="menu-action-container">
             <div class="icon-container onlyIconContainer">
                 <i class="fa fa-plus-square" />
             </div>
             <h3>Create new checklist</h3>
         </div>
+        <!-- <div v-if="!checklistView" @click="importChecklist" class="menu-action-container">
+            <div class="icon-container onlyIconContainer">
+                <i class="fal fa-file-upload" />
+            </div>
+            <h3>Import Checklist</h3>
+        </div> -->
         <div v-if="checklistView" class="menu-action-container">
             <div class="icon-container topIconContainer">
                 <i class="far fa-clock" />
             </div>
             <h3>Schedule checklist</h3>
         </div>
-        <div @click="resetChecklist()" v-if="checklistView" class="menu-action-container">
+        <div @click="resetChecklist" v-if="checklistView" class="menu-action-container">
             <div class="icon-container">
                 <i class="fa fa-sync" />
             </div>
             <h3>Reset checklist</h3>
         </div>
-        <div v-if="checklistView" class="menu-action-container">
+        <div @click="shareChecklist" v-if="checklistView" class="menu-action-container">
             <div class="icon-container">
                 <i class="fa fa-share" />
             </div>
@@ -44,8 +50,10 @@ export default {
             this.$emit('createNewChecklist');
         },
         resetChecklist: function() {
-            console.log('emmitted resetChecklist')
             this.$emit('resetChecklist');
+        },
+        shareChecklist: function() {
+            this.$emit('shareListSideMenu')
         }
     }
 }
@@ -53,7 +61,7 @@ export default {
 
 <style lang="scss" scoped>
     .side-menu-container {
-        height: 70px;
+        height: 140px;
         width: 350px;
         background-color: #fff;
         border-radius: 10px;

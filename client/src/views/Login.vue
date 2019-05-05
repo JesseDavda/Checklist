@@ -284,7 +284,7 @@
   .login-button {
     width: 150px;
     height: 40px;
-    background-color: rgba(195,7,63,1);
+    background-color: 1;
     margin-top: 15px;
     display: flex;
     align-items: center;

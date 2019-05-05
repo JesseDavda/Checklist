@@ -12,7 +12,7 @@
         <div class="nav-menu-item" @click="resetChecklist">
             <i class="fal fa-redo-alt reset" />
         </div>
-        <div class="nav-menu-item right">
+        <div class="nav-menu-item right" @click="shareList">
             <i class="fal fa-share-alt" />
         </div>
     </div>
@@ -29,8 +29,10 @@ export default {
             this.$emit('mobileNavHome');
         },
         editChecklist: function() {
-            console.log('noProblems')
             this.$emit('editChecklist');
+        },
+        shareList: function() {
+            this.$emit('shareChecklist');
         }
     }
 }
