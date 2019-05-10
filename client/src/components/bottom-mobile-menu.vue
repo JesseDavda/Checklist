@@ -63,7 +63,7 @@ export default {
     .nav-menu-item {
         width: 25%;
         height: 100%;
-        border-left: 2px solid #ecf0f1;
+        // border-left: 2px solid #ecf0f1;
         display: flex;
         align-items: center;
         justify-content: center;

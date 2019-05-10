@@ -9,15 +9,17 @@
             </div>
         </div>
         <div class="item-list" v-if="checklistTemplate.checklistItems.length > 0">
-            <ul>
-                <li v-for="item in checklistTemplate.checklistItems" :key="item.key">
-                    <div class="checklist-item">
-                        <i class="fal fa-square item-icon-one" />
-                        <h3 class="item-name">{{ item.name }}</h3>
-                        <i class="fal fa-layer-minus item-icon-two" @click="deleteTask(checklistTemplate.checklistItems.indexOf(item))" />
-                    </div>
-                </li>
-            </ul>
+                <ul>
+                    <draggable v-model="checklistTemplate.checklistItems" @start="drag=true" @end="drag=false">
+                        <li v-for="item in checklistTemplate.checklistItems" :key="item.key">
+                            <div class="checklist-item">
+                                <i class="fal fa-square item-icon-one" />
+                                <h3 class="item-name">{{ item.name }}</h3>
+                                <i class="fal fa-layer-minus item-icon-two" @click="deleteTask(checklistTemplate.checklistItems.indexOf(item))" />
+                            </div>
+                        </li>
+                    </draggable>
+                </ul>
         </div>
         <div class="item-addition">
             <i @click="addTask" class="fal fa-layer-plus" />
@@ -28,10 +30,14 @@
 
 <script>
     import axios from 'axios';
+    import draggable from 'vuedraggable';
     import _ from 'lodash';
 
     export default {
         name: "NewListView",
+        components: {
+            draggable
+        },
         props: [
             "fullChecklist"
         ],
@@ -53,11 +59,12 @@
                 this.nameEditMode = !this.nameEditMode;
                 this.saveChecklist();
             },
-            addTask: function() {
+            addTask: function(item) {
                 let newTaskObject = {
                     completed: false,
                     name: this.newTaskName,
-                    key: _.uniqueId("key_")
+                    key: _.uniqueId("key_"),
+                    position: this.checklistTemplate.checklistItems.indexOf(item)
                 }
 
                 this.checklistTemplate.checklistItems.push(newTaskObject);
@@ -109,6 +116,10 @@
 <style lang="scss" scoped>
     li {
         list-style-type: none;
+
+        &:hover {
+            cursor: ns-resize;
+        }
     }
 
     ul {
